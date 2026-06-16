@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { getPosts } from "../../lib/posts";
+import { SERIES } from "../../consts";
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const slugs = new Set<string>();
+  for (const p of posts) if (p.data.series) slugs.add(p.data.series);
+  for (const s of SERIES) slugs.add(s.slug);
+
+  return [...slugs].map((series) => ({
+    params: { series },
+    props: { posts: posts.filter((p) => p.data.series === series) },
+  }));
+}
+
+const { series } = Astro.params;
+const { posts } = Astro.props;
+const title = SERIES.find((s) => s.slug === series)?.title ?? series;
+---
+<BaseLayout
+  title={title}
+  description={`Posts in the ${title} series.`}
+  canonicalPath={`/series/${series}`}
+>
+  <h1 class="page-title">{title}</h1>
+  <p class="count">{posts.length} {posts.length === 1 ? "post" : "posts"}</p>
+  <div class="feed">
+    {posts.map((post) => <PostCard post={post} />)}
+    {posts.length === 0 && <p>No posts in this series yet.</p>}
+  </div>
+</BaseLayout>
+
+<style>
+  .page-title { margin: 2.2rem 0 0.2rem; }
+  .count { color: var(--text-faint); margin: 0 0 1rem; font-size: 0.9rem; }
+</style>

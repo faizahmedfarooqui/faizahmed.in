@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getPosts, postSlug, formatDate } from "../lib/posts";
+
+const posts = await getPosts();
+const byYear = new Map<number, typeof posts>();
+for (const p of posts) {
+  const y = p.data.datePublished.getFullYear();
+  if (!byYear.has(y)) byYear.set(y, []);
+  byYear.get(y)!.push(p);
+}
+const years = [...byYear.keys()].sort((a, b) => b - a);
+---
+<BaseLayout title="Archive" description="All posts." canonicalPath="/archive">
+  <h1 class="page-title">Archive</h1>
+  {years.map((year) => (
+    <section class="year">
+      <h2>{year}</h2>
+      <ul>
+        {byYear.get(year)!.map((post) => (
+          <li>
+            <a href={`/${postSlug(post)}`}>{post.data.title}</a>
+            <time datetime={post.data.datePublished.toISOString()}>
+              {formatDate(post.data.datePublished)}
+            </time>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</BaseLayout>
+
+<style>
+  .page-title { margin: 2.2rem 0 1rem; }
+  .year h2 { font-size: 1.2rem; color: var(--text-faint); }
+  .year ul { list-style: none; padding: 0; margin: 0 0 1.5rem; }
+  .year li { display: flex; justify-content: space-between; gap: 12px; padding: 0.4rem 0; border-bottom: 1px solid var(--border); }
+  .year time { color: var(--text-faint); font-size: 0.85rem; white-space: nowrap; }
+</style>

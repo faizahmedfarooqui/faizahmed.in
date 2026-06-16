@@ -1,0 +1,55 @@
+---
+import { CANONICAL_ORIGIN, SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+
+interface Props {
+  title?: string;
+  description?: string;
+  // Path on the canonical host, e.g. "/my-post" or "/" for home.
+  canonicalPath: string;
+  image?: string | null;
+  type?: "website" | "article";
+  publishedTime?: Date;
+}
+
+const {
+  title,
+  description = SITE_DESCRIPTION,
+  canonicalPath,
+  image,
+  type = "website",
+  publishedTime,
+} = Astro.props;
+
+const pageTitle = title ? `${title} · ${SITE_TITLE}` : SITE_TITLE;
+// Canonical always points at blog.faizahmed.in so the SEO-ranked URL keeps the
+// credit, regardless of which host served the page.
+const canonical = new URL(canonicalPath, CANONICAL_ORIGIN).href;
+const ogImage = image ??
+  "https://cdn.hashnode.com/res/hashnode/image/upload/v1655191817563/CvEyiB6oS.png";
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={SITE_TITLE} />
+<meta property="og:title" content={title ?? SITE_TITLE} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+{publishedTime && (
+  <meta property="article:published_time" content={publishedTime.toISOString()} />
+)}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title ?? SITE_TITLE} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/rss.xml" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />

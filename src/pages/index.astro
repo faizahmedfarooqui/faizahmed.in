@@ -1,0 +1,96 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import RepoCard from "../components/RepoCard.astro";
+import { getPosts } from "../lib/posts";
+import { getFeaturedRepos } from "../lib/github";
+import { AUTHOR, EXPERIENCE } from "../consts";
+
+// Served at both faizahmed.in/ and blog.faizahmed.in/ (same build).
+// Short profile hero, then the latest-articles feed. Full profile lives at /about.
+const posts = await getPosts();
+const repos = await getFeaturedRepos();
+---
+<BaseLayout canonicalPath="/">
+  <section class="hero">
+    <p class="kicker">Principal Backend Engineer · Bangalore, India</p>
+    <h1>{AUTHOR.name}</h1>
+    <p class="lede">
+      I design and scale cloud-native, multi-tenant systems across fintech,
+      healthcare, and SaaS — secure payments, real-time platforms, and backend
+      architecture on AWS and OpenStack. I write about the engineering behind it.
+    </p>
+    <p class="hero-links">
+      <a href="/about">About me →</a>
+      {AUTHOR.links.map((l) => (
+        <a href={l.url} rel="me noopener" target="_blank">{l.label}</a>
+      ))}
+    </p>
+  </section>
+
+  <section class="featured">
+    <div class="col">
+      <h2>Featured work</h2>
+      {repos.map((repo) => <RepoCard repo={repo} />)}
+    </div>
+    <div class="col">
+      <h2>Where I work</h2>
+      <ul class="xp">
+        {EXPERIENCE.map((e) => (
+          <li>
+            <span class="xp-when">{e.current ? "Now" : "Previously"}</span>
+            <span class="xp-role">{e.role}</span>
+            <span class="xp-co">
+              {e.url ? (
+                <a href={e.url} target="_blank" rel="noopener">{e.company}</a>
+              ) : (
+                e.company
+              )}
+              <span class="xp-period">· {e.period}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <h2 class="feed-heading">Latest articles</h2>
+  <div class="feed">
+    {posts.map((post) => <PostCard post={post} />)}
+  </div>
+</BaseLayout>
+
+<style>
+  .hero { padding: 2.8rem 0 1.5rem; border-bottom: 1px solid var(--border); }
+  .kicker { color: var(--text-faint); font-size: 0.85rem; margin: 0 0 0.4rem; }
+  .hero h1 { margin: 0 0 0.8rem; font-size: 2.1rem; }
+  .lede { color: var(--text-soft); max-width: 60ch; margin: 0 0 1.2rem; }
+  .hero-links { display: flex; gap: 18px; flex-wrap: wrap; margin: 0; font-size: 0.92rem; }
+
+  .featured {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    padding: 2rem 0 0.5rem;
+  }
+  .featured h2 { margin: 0 0 1rem; font-size: 1.25rem; }
+  .xp { list-style: none; padding: 0; margin: 0; }
+  .xp li { padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
+  .xp-when {
+    display: inline-block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    margin-bottom: 2px;
+  }
+  .xp-role { display: block; font-weight: 700; }
+  .xp-co { display: block; color: var(--text-soft); font-size: 0.9rem; }
+  .xp-period { color: var(--text-faint); }
+
+  .feed-heading { margin-top: 2.2rem; }
+
+  @media (max-width: 640px) {
+    .featured { grid-template-columns: 1fr; gap: 1.5rem; }
+  }
+</style>

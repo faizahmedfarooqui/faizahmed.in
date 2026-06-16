@@ -1,0 +1,64 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import LiteYouTube from "../components/LiteYouTube.astro";
+import { BOLT_VIDEOS } from "../consts";
+---
+<BaseLayout
+  title="Bolt.SH"
+  description="Bolt.SH — the internal OpenStack-powered IaaS data center I designed and built at GeekyAnts. A walkthrough video series."
+  canonicalPath="/bolt"
+>
+  <article class="bolt">
+    <header class="bolt-head">
+      <p class="kicker">Project · GeekyAnts</p>
+      <h1>Bolt.SH</h1>
+      <p class="lede">
+        Bolt.SH is the
+        <a href="https://www.openstack.org" target="_blank" rel="noopener">OpenStack</a>-powered
+        infrastructure-as-a-service platform I designed and built to run
+        internally at GeekyAnts — VM orchestration, virtual networking, and load
+        balancing that let teams self-serve infra and cut external data-center
+        costs by 60%. Below is the walkthrough series covering how it works, from
+        auto-provisioning servers to orchestration with
+        <a href="https://juju.is" target="_blank" rel="noopener">Juju</a> and
+        monitoring with <a href="https://www.zabbix.com" target="_blank" rel="noopener">Zabbix</a>.
+      </p>
+    </header>
+
+    <div class="videos">
+      {BOLT_VIDEOS.map((v) => (
+        <figure class="video">
+          <LiteYouTube id={v.id} title={v.title} />
+          <figcaption>
+            <span class="ep">Episode {v.episode}</span>
+            <span class="vt">{v.title}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .bolt { padding-top: 1.8rem; }
+  .bolt-head { margin-bottom: 2rem; }
+  .bolt-head .kicker { color: var(--text-faint); font-size: 0.85rem; margin: 0 0 0.3rem; }
+  .bolt-head h1 { margin: 0 0 0.8rem; }
+  .lede { color: var(--text-soft); max-width: 70ch; margin: 0; }
+
+  .videos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+  .video { margin: 0; }
+  figcaption { margin-top: 8px; }
+  .ep {
+    display: block;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+  }
+  .vt { display: block; font-weight: 700; font-size: 0.95rem; }
+</style>

@@ -1,0 +1,36 @@
+---
+import type { Post } from "../lib/posts";
+import { postSlug, readMinutes, formatDate } from "../lib/posts";
+
+interface Props { post: Post; }
+const { post } = Astro.props;
+const href = `/${postSlug(post)}`;
+const mins = readMinutes(post.body);
+---
+<article class="post-card">
+  <a href={href}>
+    <h2>{post.data.title}</h2>
+  </a>
+  <p class="meta">
+    <time datetime={post.data.datePublished.toISOString()}>
+      {formatDate(post.data.datePublished)}
+    </time>
+    <span aria-hidden="true">·</span>
+    <span>{mins} min read</span>
+    {post.data.series && (
+      <>
+        <span aria-hidden="true">·</span>
+        <a class="series-tag" href={`/series/${post.data.series}`}>{post.data.series}</a>
+      </>
+    )}
+  </p>
+</article>
+
+<style>
+  .post-card { padding: 1.1rem 0; border-bottom: 1px solid var(--border); }
+  .post-card h2 { margin: 0 0 0.3rem; font-size: 1.2rem; color: var(--text); }
+  .post-card a:hover h2 { color: var(--accent); }
+  .post-card a:hover { text-decoration: none; }
+  .meta { margin: 0; color: var(--text-faint); font-size: 0.88rem; display: flex; gap: 8px; flex-wrap: wrap; }
+  .series-tag { color: var(--accent); }
+</style>

@@ -1,0 +1,32 @@
+---
+import type { RepoStats } from "../lib/github";
+interface Props { repo: RepoStats; }
+const { repo } = Astro.props;
+const stars = repo.stars.toLocaleString("en-US");
+const forks = repo.forks.toLocaleString("en-US");
+---
+<a class="repo-card" href={repo.url} target="_blank" rel="noopener">
+  <span class="repo-name">{repo.repo}</span>
+  <span class="repo-blurb">{repo.blurb || repo.description}</span>
+  <span class="repo-stats">
+    <span title="Stars">★ {stars}</span>
+    <span title="Forks">⑂ {forks}</span>
+    <span class="repo-go">GitHub →</span>
+  </span>
+</a>
+
+<style>
+  .repo-card {
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    background: var(--bg-soft);
+    color: var(--text);
+  }
+  .repo-card:hover { border-color: var(--accent); text-decoration: none; }
+  .repo-name { display: block; font-weight: 700; color: var(--accent); }
+  .repo-blurb { display: block; color: var(--text-soft); font-size: 0.92rem; margin: 6px 0 12px; }
+  .repo-stats { display: flex; gap: 16px; align-items: center; color: var(--text-faint); font-size: 0.85rem; }
+  .repo-go { margin-left: auto; color: var(--text-soft); }
+</style>

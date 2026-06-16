@@ -1,0 +1,34 @@
+---
+import { AUTHOR } from "../consts";
+interface Props { postCount?: number; }
+const { postCount } = Astro.props;
+---
+<aside class="author-card">
+  <div class="meta">
+    <p class="name">{AUTHOR.name}</p>
+    {postCount != null && <p class="count">{postCount} posts</p>}
+    <p class="bio">{AUTHOR.bio}</p>
+    <p class="links">
+      {AUTHOR.links.map((l) => (
+        <a href={l.url} rel="me noopener" target="_blank">{l.label}</a>
+      ))}
+    </p>
+  </div>
+</aside>
+
+<style>
+  .author-card {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.1rem 1.2rem;
+    background: var(--bg-soft);
+    margin: 2.5rem 0;
+  }
+  .name { font-weight: 700; margin: 0; }
+  .count { color: var(--text-faint); font-size: 0.85rem; margin: 2px 0 6px; }
+  .bio { color: var(--text-soft); margin: 0 0 8px; font-size: 0.95rem; }
+  .links { display: flex; gap: 14px; flex-wrap: wrap; margin: 0; font-size: 0.9rem; }
+</style>

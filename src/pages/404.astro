@@ -1,0 +1,14 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+<BaseLayout title="Not found" canonicalPath="/404">
+  <section class="nf">
+    <h1>404</h1>
+    <p>That page doesn't exist. Try the <a href="/">home feed</a> or <a href="/archive">archive</a>.</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf { padding: 4rem 0; text-align: center; }
+  .nf h1 { font-size: 3rem; margin: 0; }
+</style>

@@ -1,0 +1,6 @@
+# Everyone is welcome — humans, browsers, crawlers, AI agents, Jarvis, aliens.
+User-agent: *
+Allow: /
+
+Sitemap: https://blog.faizahmed.in/sitemap-index.xml
+Sitemap: https://faizahmed.in/sitemap-index.xml

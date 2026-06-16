@@ -1,0 +1,71 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import AuthorCard from "../components/AuthorCard.astro";
+import { getPosts, postSlug, readMinutes, formatDate } from "../lib/posts";
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    params: { slug: postSlug(post) },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+const mins = readMinutes(post.body);
+const desc = post.body.replace(/[#>*`_\-]/g, "").trim().slice(0, 160);
+---
+<BaseLayout
+  title={post.data.title}
+  description={desc}
+  canonicalPath={`/${postSlug(post)}`}
+  image={post.data.cover}
+  type="article"
+  publishedTime={post.data.datePublished}
+>
+  <div class="post-wrap">
+  <article class="post" data-pagefind-body>
+    {post.data.cover && (
+      <img class="cover" src={post.data.cover} alt="" />
+    )}
+    <h1 data-pagefind-meta="title">{post.data.title}</h1>
+    <p class="post-meta">
+      <time datetime={post.data.datePublished.toISOString()}>
+        {formatDate(post.data.datePublished)}
+      </time>
+      <span aria-hidden="true">·</span>
+      <span>{mins} min read</span>
+      {post.data.series && (
+        <>
+          <span aria-hidden="true">·</span>
+          <a href={`/series/${post.data.series}`}>{post.data.series}</a>
+        </>
+      )}
+    </p>
+
+    {post.data.tags.length > 0 && (
+      <p class="tags">
+        {post.data.tags.map((t) => <a href={`/tag/${t}`}>#{t}</a>)}
+      </p>
+    )}
+
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+
+  <AuthorCard />
+  </div>
+</BaseLayout>
+
+<style>
+  .post-wrap { max-width: var(--reading); margin: 0 auto; }
+  .post { padding-top: 1.8rem; }
+  .cover { width: 100%; border-radius: 12px; margin-bottom: 1.5rem; }
+  .post h1 { margin: 0 0 0.5rem; }
+  .post-meta { color: var(--text-faint); font-size: 0.9rem; display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 0.6rem; }
+  .tags { display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.88rem; margin: 0 0 1.5rem; }
+  .tags a { color: var(--text-soft); }
+  .prose { margin-top: 1.5rem; }
+</style>

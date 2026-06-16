@@ -1,0 +1,132 @@
+---
+import { SITE_TITLE, SERIES } from "../consts";
+import ThemeToggle from "./ThemeToggle.astro";
+---
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="/">
+      <span>{SITE_TITLE}</span>
+    </a>
+
+    <a class="nav-link" href="/about">About</a>
+    <a class="nav-link" href="/bolt">Bolt.SH</a>
+
+    <div class="series-dd">
+      <button id="series-trigger" class="nav-link" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="series-menu">
+        Series <span aria-hidden="true">▾</span>
+      </button>
+      <div id="series-menu" class="series-menu" role="menu" hidden>
+        {SERIES.map((s) => (
+          <a href={`/series/${s.slug}`} role="menuitem">
+            <span class="s-title">{s.title}</span>
+            <span class="s-desc">{s.description}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="search-open" type="button" aria-label="Search (Ctrl/Cmd + K)">⌘K</button>
+      <ThemeToggle />
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 56px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--text);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .brand:hover { text-decoration: none; }
+  .nav-link {
+    color: var(--text-soft);
+    font-size: 0.9rem;
+    white-space: nowrap;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font);
+    padding: 0;
+  }
+  .nav-link:hover { color: var(--accent); text-decoration: none; }
+  .series-dd { position: relative; }
+  .series-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    width: 320px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+    padding: 6px;
+    z-index: 30;
+  }
+  .series-menu a {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 9px;
+    color: var(--text);
+  }
+  .series-menu a:hover { background: var(--bg-soft); text-decoration: none; }
+  .s-title { display: block; font-weight: 700; font-size: 0.92rem; }
+  .s-desc { display: block; color: var(--text-faint); font-size: 0.8rem; margin-top: 3px; line-height: 1.5; }
+  .actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+  #search-open {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--text-soft);
+    cursor: pointer;
+    height: 34px;
+    padding: 0 10px;
+    font-family: var(--font);
+    font-size: 0.85rem;
+  }
+  #search-open:hover { color: var(--text); }
+  @media (max-width: 640px) {
+    .bar { flex-wrap: wrap; height: auto; padding: 9px 0; row-gap: 8px; gap: 14px; }
+    .brand { font-size: 1rem; }
+    .series-menu { width: min(300px, calc(100vw - 24px)); left: auto; }
+  }
+</style>
+
+<script>
+  const trigger = document.getElementById("series-trigger");
+  const menu = document.getElementById("series-menu");
+  if (trigger && menu) {
+    const setOpen = (open: boolean) => {
+      menu.hidden = !open;
+      trigger.setAttribute("aria-expanded", String(open));
+    };
+    trigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      setOpen(menu.hidden);
+    });
+    document.addEventListener("click", (e) => {
+      if (!menu.hidden && !menu.contains(e.target as Node) && e.target !== trigger) {
+        setOpen(false);
+      }
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") setOpen(false);
+    });
+  }
+</script>

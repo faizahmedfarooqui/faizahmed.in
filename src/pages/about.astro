@@ -1,0 +1,206 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import RepoCard from "../components/RepoCard.astro";
+import { getFeaturedRepos } from "../lib/github";
+import { AUTHOR, yearsOfExperience } from "../consts";
+
+const exp = yearsOfExperience();
+const repos = await getFeaturedRepos();
+---
+<BaseLayout
+  title="About"
+  description={`Principal Backend Engineer with ${exp}+ years of experience designing and scaling cloud-native, multi-tenant systems in fintech, healthcare, and SaaS.`}
+  canonicalPath="/about"
+>
+  <article class="about">
+    <header class="about-head">
+      <p class="kicker">Principal Backend Engineer · Bangalore, India</p>
+      <h1>{AUTHOR.name}</h1>
+      <p class="links">
+        {AUTHOR.links.map((l) => (
+          <a href={l.url} rel="me noopener" target="_blank">{l.label}</a>
+        ))}
+      </p>
+    </header>
+
+    <div class="about-grid">
+      <div class="main">
+        <section>
+          <h2>Summary</h2>
+          <p>
+            Principal Backend Engineer with {exp}+ years of experience designing
+            and scaling cloud-native, multi-tenant systems in fintech,
+            healthcare, and SaaS. I work on secure digital payments, real-time
+            data platforms, and backend architecture on
+            <a href="https://aws.amazon.com" target="_blank" rel="noopener">AWS</a> and
+            <a href="https://www.openstack.org" target="_blank" rel="noopener">OpenStack</a>,
+            with a track record of building regulatory-compliant solutions
+            aligned with HIPAA, PCI DSS, COPPA, and GDPR. Along the way I've cut
+            cloud costs by up to 60%, delivered production platforms for 500K+
+            users, and led teams of 6+ engineers.
+          </p>
+        </section>
+
+        <section>
+          <h2>Experience</h2>
+
+          <div class="role">
+            <h3>Talendy Holdings — Lead Software Engineer</h3>
+            <p class="when">Bengaluru · June 2026 – Present</p>
+            <p>Technical leadership and strategy, development and quality, modelling and process.</p>
+          </div>
+
+          <div class="role">
+            <h3>GeekyAnts — Principal Engineer / Architect</h3>
+            <p class="when">Bengaluru · September 2015 – May 2026</p>
+            <ul>
+              <li>
+                <strong>Common Wallet Platform (Fintech)</strong> — Architected a
+                white-label digital wallet for US banks, similar to Apple Pay.
+                Built end-to-end encrypted payment infrastructure with
+                <a href="https://aws.amazon.com/kms/" target="_blank" rel="noopener">AWS KMS</a>
+                + <a href="https://aws.amazon.com/ec2/nitro/nitro-enclaves/" target="_blank" rel="noopener">Nitro Enclaves</a>,
+                delivered a multi-tenant system for 10+ banks and 500K+ end-users,
+                ensured PCI DSS and GDPR compliance, and cut fraud incidents by 25%.
+              </li>
+              <li>
+                <strong>Bolt.SH (Cloud IaaS)</strong> — Designed an
+                <a href="https://www.openstack.org" target="_blank" rel="noopener">OpenStack</a>-powered
+                IaaS platform with VM orchestration, virtual networking, and load
+                balancing. Reduced external data-center costs by 60% and hardened
+                infrastructure with compliance-aligned access controls and audit
+                logging. <a href="/bolt">Watch the series →</a>
+              </li>
+              <li>
+                <strong>GlueStack Framework</strong> — Built a full-stack monorepo
+                framework that standardized architecture across 30+ client
+                projects, cut setup time by 40%, and shipped compliance-ready
+                boilerplates for auth, logging, and API security.
+              </li>
+              <li>
+                <strong>Healthcare Management System</strong> — Built a modular,
+                microservice-based HMS automating scheduling, billing, and
+                reporting; improved operational efficiency by 40% with
+                HIPAA-compliant PHI handling and audit trails.
+              </li>
+              <li>
+                <strong>COPPA-Compliant Social App</strong> — Developed a
+                child-safety-compliant social platform backend in
+                <a href="https://nodejs.org" target="_blank" rel="noopener">Node.js</a>,
+                <a href="https://graphql.org" target="_blank" rel="noopener">GraphQL</a>, and
+                <a href="https://aws.amazon.com" target="_blank" rel="noopener">AWS</a>,
+                with data anonymization and parental-consent workflows.
+              </li>
+              <li>Mentored 10+ engineers and drove adoption of trunk-based development with <a href="https://docs.gitlab.com/ee/ci/" target="_blank" rel="noopener">GitLab CI</a>.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section>
+          <h2>Education</h2>
+          <p>
+            B.Tech, Computer Science Engineering — Dr. A. P. J. Abdul Kalam
+            Technical University, Lucknow, India (2011 – 2015).
+          </p>
+        </section>
+      </div>
+
+      <aside class="side">
+        <section>
+          <h2>Core competencies</h2>
+          <ul class="comp">
+            <li>
+              <strong>Backend &amp; APIs</strong> —
+              <a href="https://nodejs.org" target="_blank" rel="noopener">Node.js</a>,
+              <a href="https://www.typescriptlang.org" target="_blank" rel="noopener">TypeScript</a>,
+              <a href="https://www.php.net" target="_blank" rel="noopener">PHP</a>,
+              <a href="https://nestjs.com" target="_blank" rel="noopener">NestJS</a>,
+              <a href="https://expressjs.com" target="_blank" rel="noopener">Express</a>,
+              <a href="https://graphql.org" target="_blank" rel="noopener">GraphQL</a>, REST
+            </li>
+            <li>
+              <strong>Cloud &amp; infra</strong> —
+              <a href="https://aws.amazon.com" target="_blank" rel="noopener">AWS</a>
+              (<a href="https://aws.amazon.com/waf/" target="_blank" rel="noopener">WAF</a>,
+              <a href="https://aws.amazon.com/ecs/" target="_blank" rel="noopener">ECS</a>,
+              <a href="https://aws.amazon.com/lambda/" target="_blank" rel="noopener">Lambda</a>,
+              <a href="https://aws.amazon.com/kms/" target="_blank" rel="noopener">KMS</a>,
+              <a href="https://aws.amazon.com/ec2/nitro/nitro-enclaves/" target="_blank" rel="noopener">Nitro Enclaves</a>,
+              <a href="https://aws.amazon.com/ses/" target="_blank" rel="noopener">SES</a>),
+              <a href="https://www.openstack.org" target="_blank" rel="noopener">OpenStack</a>,
+              <a href="https://maas.io" target="_blank" rel="noopener">MaaS</a>,
+              <a href="https://www.docker.com" target="_blank" rel="noopener">Docker</a>,
+              <a href="https://docs.gitlab.com/ee/ci/" target="_blank" rel="noopener">GitLab CI/CD</a>,
+              <a href="https://bitbucket.org/product/features/pipelines" target="_blank" rel="noopener">BitBucket CI</a>,
+              <a href="https://github.com/features/actions" target="_blank" rel="noopener">GitHub Actions</a>
+            </li>
+            <li>
+              <strong>Databases</strong> —
+              <a href="https://www.postgresql.org" target="_blank" rel="noopener">PostgreSQL</a>,
+              <a href="https://www.mysql.com" target="_blank" rel="noopener">MySQL</a>,
+              <a href="https://www.mongodb.com" target="_blank" rel="noopener">MongoDB</a>
+            </li>
+            <li>
+              <strong>Architecture &amp; tooling</strong> — Microservices, multi-tenant systems,
+              observability (<a href="https://opentelemetry.io" target="_blank" rel="noopener">OpenTelemetry</a>,
+              <a href="https://www.zabbix.com" target="_blank" rel="noopener">Zabbix</a>),
+              API gateways (<a href="https://aws.amazon.com/api-gateway/" target="_blank" rel="noopener">AWS</a>,
+              <a href="https://apisix.apache.org" target="_blank" rel="noopener">APISIX</a>,
+              <a href="https://nginx.org" target="_blank" rel="noopener">Nginx</a>)
+            </li>
+            <li><strong>Leadership</strong> — Team mentorship, trunk-based development, release-velocity optimization</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Open source &amp; projects</h2>
+          <div class="repo-grid">
+            {repos.map((repo) => <RepoCard repo={repo} />)}
+          </div>
+          <ul>
+            <li><strong>GlueStack Framework</strong> — <a href="https://github.com/gluestack" target="_blank" rel="noopener">github.com/gluestack</a> · open-source monorepo framework powering 30+ client apps.</li>
+            <li><strong>Node.js Zero-NPM</strong> — <a href="https://github.com/faizahmedfarooqui/nodejs" target="_blank" rel="noopener">faizahmedfarooqui/nodejs</a> · experimental server built without npm packages.</li>
+            <li><strong>Email2Webhook</strong> — <a href="https://email2webhook.com" target="_blank" rel="noopener">email2webhook.com</a> · SaaS tool converting emails into API JSON payloads.</li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .about { padding-top: 1.8rem; }
+  .about-head { margin-bottom: 1.8rem; }
+  .about-head .kicker { color: var(--text-faint); font-size: 0.85rem; margin: 0 0 0.3rem; }
+  .about-head h1 { margin: 0 0 0.7rem; }
+  .links { display: flex; gap: 16px; flex-wrap: wrap; margin: 0; font-size: 0.92rem; }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+    gap: 48px;
+    align-items: start;
+  }
+  .side { position: sticky; top: 76px; }
+
+  .about section { margin-bottom: 2rem; }
+  .main section:first-child,
+  .side section:first-child { margin-top: 0; }
+  .about h2 { margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; }
+
+  .comp { list-style: none; padding: 0; }
+  .comp li { padding: 0.4rem 0; font-size: 0.95rem; }
+  .role { margin-top: 1.3rem; }
+  .role h3 { margin: 0 0 0.1rem; font-size: 1.05rem; }
+  .when { color: var(--text-faint); font-size: 0.85rem; margin: 0 0 0.6rem; }
+  .about ul { padding-left: 1.2rem; }
+  .comp { padding-left: 0; }
+  .about li { margin-bottom: 0.5rem; }
+  .repo-grid { display: grid; gap: 12px; margin: 0 0 1.2rem; }
+
+  @media (max-width: 820px) {
+    .about-grid { grid-template-columns: 1fr; gap: 0; }
+    .side { position: static; }
+    .side section:first-child { margin-top: 2rem; }
+  }
+</style>
