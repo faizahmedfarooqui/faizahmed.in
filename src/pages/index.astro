@@ -9,6 +9,7 @@ import { AUTHOR, EXPERIENCE } from "../consts";
 // Served at both faizahmed.in/ and blog.faizahmed.in/ (same build).
 // Short profile hero, then the latest-articles feed. Full profile lives at /about.
 const posts = await getPosts();
+const latest = posts.slice(0, 4);
 const repos = await getFeaturedRepos();
 ---
 <BaseLayout canonicalPath="/">
@@ -23,7 +24,7 @@ const repos = await getFeaturedRepos();
     <p class="hero-links">
       <a href="/about">About me →</a>
       {AUTHOR.links.map((l) => (
-        <a href={l.url} rel="me noopener" target="_blank">{l.label}</a>
+        <a href={l.url} rel="me noopener" target="_blank" download={l.download}>{l.label}</a>
       ))}
     </p>
   </section>
@@ -56,8 +57,11 @@ const repos = await getFeaturedRepos();
 
   <h2 class="feed-heading">Latest articles</h2>
   <div class="feed">
-    {posts.map((post) => <PostCard post={post} />)}
+    {latest.map((post, i) => <PostCard post={post} featured={i === 0} />)}
   </div>
+  <p class="feed-more">
+    <a href="/archive">View all {posts.length} posts →</a>
+  </p>
 </BaseLayout>
 
 <style>
@@ -89,6 +93,7 @@ const repos = await getFeaturedRepos();
   .xp-period { color: var(--text-faint); }
 
   .feed-heading { margin-top: 2.2rem; }
+  .feed-more { margin: 0 0 2.5rem; font-size: 0.95rem; }
 
   @media (max-width: 640px) {
     .featured { grid-template-columns: 1fr; gap: 1.5rem; }

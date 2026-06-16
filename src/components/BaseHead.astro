@@ -24,8 +24,8 @@ const pageTitle = title ? `${title} · ${SITE_TITLE}` : SITE_TITLE;
 // Canonical always points at blog.faizahmed.in so the SEO-ranked URL keeps the
 // credit, regardless of which host served the page.
 const canonical = new URL(canonicalPath, CANONICAL_ORIGIN).href;
-const ogImage = image ??
-  "https://cdn.hashnode.com/res/hashnode/image/upload/v1655191817563/CvEyiB6oS.png";
+// Self-hosted default OG image (public/og-default.png); no external image host.
+const ogImage = image ?? new URL("/og-default.png", CANONICAL_ORIGIN).href;
 ---
 
 <meta charset="utf-8" />

@@ -2,5 +2,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://blog.faizahmed.in/sitemap-index.xml
-Sitemap: https://faizahmed.in/sitemap-index.xml
+Sitemap: https://blog.faizahmed.in/sitemap.xml
+Sitemap: https://faizahmed.in/sitemap.xml

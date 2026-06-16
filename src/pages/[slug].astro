@@ -1,7 +1,10 @@
 ---
+import { Image, getImage } from "astro:assets";
+import { render } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import AuthorCard from "../components/AuthorCard.astro";
 import { getPosts, postSlug, readMinutes, formatDate } from "../lib/posts";
+import { CANONICAL_ORIGIN } from "../consts";
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -12,22 +15,33 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
-const mins = readMinutes(post.body);
-const desc = post.body.replace(/[#>*`_\-]/g, "").trim().slice(0, 160);
+const { Content, headings } = await render(post);
+const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+const body = post.body ?? "";
+const mins = readMinutes(body);
+const desc = body.replace(/[#>*`_\-]/g, "").trim().slice(0, 160);
+// Social-card image: a 1200px-wide JPEG derivative on the canonical host —
+// not the multi-MB original (which then no longer needs emitting at all).
+const ogCover = post.data.cover
+  ? await getImage({ src: post.data.cover, width: 1200, format: "jpg" })
+  : undefined;
+const ogImage = ogCover
+  ? new URL(ogCover.src, CANONICAL_ORIGIN).href
+  : undefined;
 ---
 <BaseLayout
   title={post.data.title}
   description={desc}
   canonicalPath={`/${postSlug(post)}`}
-  image={post.data.cover}
+  image={ogImage}
   type="article"
   publishedTime={post.data.datePublished}
 >
   <div class="post-wrap">
+  <div class="post-main">
   <article class="post" data-pagefind-body>
     {post.data.cover && (
-      <img class="cover" src={post.data.cover} alt="" />
+      <Image class="cover" src={post.data.cover} alt="" />
     )}
     <h1 data-pagefind-meta="title">{post.data.title}</h1>
     <p class="post-meta">
@@ -57,10 +71,35 @@ const desc = post.body.replace(/[#>*`_\-]/g, "").trim().slice(0, 160);
 
   <AuthorCard />
   </div>
+
+  {toc.length > 0 && (
+    <aside class="post-toc" aria-label="Table of contents">
+      <p class="toc-title">On this page</p>
+      <nav>
+        <ul>
+          {toc.map((h) => (
+            <li class:list={[`toc-d${h.depth}`]}>
+              <a href={`#${h.slug}`}>{h.text}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </aside>
+  )}
+  </div>
 </BaseLayout>
 
 <style>
-  .post-wrap { max-width: var(--reading); margin: 0 auto; }
+  /* Reading column + sticky table-of-contents rail on the right. The pair is
+     centered within the wide shell; the TOC stays put while the post scrolls. */
+  .post-wrap {
+    display: grid;
+    grid-template-columns: minmax(0, var(--reading)) 240px;
+    gap: 48px;
+    justify-content: center;
+    align-items: start;
+  }
+  .post-main { min-width: 0; }
   .post { padding-top: 1.8rem; }
   .cover { width: 100%; border-radius: 12px; margin-bottom: 1.5rem; }
   .post h1 { margin: 0 0 0.5rem; }
@@ -68,4 +107,99 @@ const desc = post.body.replace(/[#>*`_\-]/g, "").trim().slice(0, 160);
   .tags { display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.88rem; margin: 0 0 1.5rem; }
   .tags a { color: var(--text-soft); }
   .prose { margin-top: 1.5rem; }
+
+  .post-toc {
+    position: sticky;
+    top: 80px;
+    align-self: start;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    padding-top: 1.8rem;
+    font-size: 0.85rem;
+  }
+  .toc-title {
+    margin: 0 0 0.6rem;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-faint);
+  }
+  .post-toc nav ul { list-style: none; margin: 0; padding: 0; }
+  .post-toc li { margin: 0; }
+  .post-toc a {
+    display: block;
+    padding: 4px 0 4px 12px;
+    border-left: 2px solid var(--border);
+    color: var(--text-faint);
+    line-height: 1.4;
+  }
+  .post-toc a:hover { color: var(--text); text-decoration: none; }
+  .post-toc a.active { color: var(--accent); border-left-color: var(--accent); }
+  .post-toc .toc-d3 a { padding-left: 24px; font-size: 0.95em; }
+
+  /* No room for the rail on narrower screens — drop to a single column. */
+  @media (max-width: 1024px) {
+    .post-wrap { grid-template-columns: minmax(0, 1fr); max-width: var(--reading); margin: 0 auto; }
+    .post-toc { display: none; }
+  }
 </style>
+
+<script>
+  // Enhance code blocks with a terminal-style header (language + copy button).
+  document.querySelectorAll<HTMLPreElement>("pre.astro-code").forEach((pre) => {
+    if (pre.closest(".code-block")) return;
+    let lang = pre.getAttribute("data-language") || "code";
+    if (lang === "plaintext" || lang === "text") lang = "text";
+
+    const block = document.createElement("figure");
+    block.className = "code-block";
+    const head = document.createElement("figcaption");
+    head.className = "code-head";
+    const label = document.createElement("span");
+    label.className = "code-lang";
+    label.textContent = lang;
+    const copy = document.createElement("button");
+    copy.type = "button";
+    copy.className = "code-copy";
+    copy.textContent = "Copy";
+    head.append(label, copy);
+
+    pre.parentNode?.insertBefore(block, pre);
+    block.append(head, pre);
+
+    copy.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(pre.innerText);
+        copy.textContent = "Copied";
+        copy.classList.add("ok");
+        setTimeout(() => {
+          copy.textContent = "Copy";
+          copy.classList.remove("ok");
+        }, 1600);
+      } catch {
+        /* clipboard unavailable */
+      }
+    });
+  });
+
+  // Scroll-spy: highlight the current section in the table of contents.
+  const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>(".post-toc a")];
+  if (tocLinks.length) {
+    const byId = new Map(
+      tocLinks.map((a) => [decodeURIComponent(a.hash.slice(1)), a]),
+    );
+    const seen = [...document.querySelectorAll<HTMLElement>(".prose h2, .prose h3")]
+      .filter((h) => byId.has(h.id));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          tocLinks.forEach((l) => l.classList.remove("active"));
+          byId.get((e.target as HTMLElement).id)?.classList.add("active");
+        }
+      },
+      { rootMargin: "-80px 0px -70% 0px" },
+    );
+    seen.forEach((h) => observer.observe(h));
+  }
+</script>

@@ -18,7 +18,7 @@ const repos = await getFeaturedRepos();
       <h1>{AUTHOR.name}</h1>
       <p class="links">
         {AUTHOR.links.map((l) => (
-          <a href={l.url} rel="me noopener" target="_blank">{l.label}</a>
+          <a href={l.url} rel="me noopener" target="_blank" download={l.download}>{l.label}</a>
         ))}
       </p>
     </header>

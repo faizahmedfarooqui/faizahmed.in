@@ -1,4 +1,10 @@
 ---
+// Self-hosted Ubuntu Mono (latin subset) — bundled into _astro, no runtime CDN
+// and no render-blocking @import chain. font-display: swap is set by fontsource.
+import "@fontsource/ubuntu-mono/latin-400.css";
+import "@fontsource/ubuntu-mono/latin-400-italic.css";
+import "@fontsource/ubuntu-mono/latin-700.css";
+import "@fontsource/ubuntu-mono/latin-700-italic.css";
 import "../styles/global.css";
 import BaseHead from "../components/BaseHead.astro";
 import Analytics from "../components/Analytics.astro";
@@ -33,7 +39,9 @@ const props = Astro.props;
     <script>
       // Render any Mermaid diagrams (server-emitted <pre class="mermaid">).
       if (document.querySelector("pre.mermaid")) {
-        import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs")
+        const mermaidUrl =
+          "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+        import(/* @vite-ignore */ mermaidUrl)
           .then(({ default: mermaid }) => {
             const dark = document.documentElement.dataset.theme === "dark";
             mermaid.initialize({

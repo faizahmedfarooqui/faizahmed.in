@@ -5,3 +5,6 @@ dist/
 *.log
 .env
 .env.*
+
+# Claude Code local settings/state (per-machine; not shared)
+.claude/

@@ -10,16 +10,16 @@
       <input
         id="search-input"
         type="search"
-        placeholder="Search posts…"
+        placeholder="Search…"
         autocomplete="off"
         autocapitalize="off"
         spellcheck="false"
-        aria-label="Search posts"
+        aria-label="Search the site"
       />
       <kbd>esc</kbd>
     </div>
     <ul id="search-results" role="listbox"></ul>
-    <p id="search-hint" class="search-hint">Type to search posts.</p>
+    <p id="search-hint" class="search-hint">Type to search.</p>
   </div>
 </div>
 
@@ -62,7 +62,7 @@
     if (!q.trim() || !data) {
       list.innerHTML = "";
       hint.hidden = false;
-      hint.textContent = data ? "Type to search posts." : "Loading…";
+      hint.textContent = data ? "Type to search." : "Loading…";
       return;
     }
     const needle = q.toLowerCase();
@@ -75,7 +75,7 @@
     if (hits.length === 0) {
       list.innerHTML = "";
       hint.hidden = false;
-      hint.textContent = `No posts match “${q}”.`;
+      hint.textContent = `No results for “${q}”.`;
       return;
     }
     hint.hidden = true;

@@ -37,7 +37,10 @@ export const AUTHOR = {
     { label: "GitHub", url: "https://github.com/faizahmedfarooqui" },
     { label: "LinkedIn", url: "https://linkedin.com/in/faizahmedfarooqui" },
     { label: "Website", url: "https://faizahmed.in" },
-  ],
+    // Self-hosted (no external CDN). Drop the file at public/resume.pdf.
+    // `download` makes browsers save it rather than preview inline.
+    { label: "Resume", url: "/resume.pdf", download: true },
+  ] as { label: string; url: string; download?: boolean }[],
 };
 
 // Series shown in the header nav. `slug` must match the `series:` frontmatter
@@ -57,6 +60,28 @@ export const SERIES = [
     title: "Scaling JavaScript & Node.js",
     slug: "scaling-javascript-nodejs",
     description: "Patterns for scaling Node.js — queues, backpressure, idempotency, and production reliability.",
+  },
+  {
+    title: "Virtualization & MicroVMs",
+    slug: "vcw",
+    description: "QEMU, Firecracker microVMs, and Open vSwitch networking from the ground up.",
+  },
+  {
+    title: "Microservices Design Patterns",
+    slug: "microservices-design-patterns",
+    description: "Decomposition, data, integration, and operational patterns for microservices.",
+  },
+  {
+    title: "FinTech Engineering",
+    slug: "fintech",
+    description: "Payments, lending, compliance, and building scalable, resilient financial systems.",
+  },
+  {
+    // NOTE: slug is "treafik" (typo in the original Hashnode series); kept so the
+    // existing /series/treafik posts keep resolving. Title is spelled correctly.
+    title: "Traefik",
+    slug: "treafik",
+    description: "Reverse proxy and ingress with Traefik, Docker Compose, and Postgres/pgAdmin.",
   },
 ];
 

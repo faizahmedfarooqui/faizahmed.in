@@ -10,10 +10,15 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/rss": "^4.0.11",
-    "@astrojs/sitemap": "^3.2.1",
-    "astro": "^5.7.0",
+    "@astrojs/rss": "^4.0.18",
+    "@fontsource/ubuntu-mono": "^5.2.8",
+    "astro": "^6.4.7",
+    "github-slugger": "^2.0.0",
     "reading-time": "^1.5.0",
+    "sharp": "^0.35.1",
     "unist-util-visit": "^5.0.0"
+  },
+  "devDependencies": {
+    "@astrojs/markdown-remark": "7.2.0"
   }
 }

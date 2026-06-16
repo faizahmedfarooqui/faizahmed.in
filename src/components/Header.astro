@@ -1,6 +1,29 @@
 ---
 import { SITE_TITLE, SERIES } from "../consts";
+import { getPosts } from "../lib/posts";
 import ThemeToggle from "./ThemeToggle.astro";
+
+// Build the dropdown from every series that actually has posts, so new series
+// show up automatically. Curated title/description come from SERIES; anything
+// uncurated falls back to a humanized slug + post count. Sorted by post count.
+const counts = new Map<string, number>();
+for (const p of await getPosts()) {
+  const s = p.data.series;
+  if (s) counts.set(s, (counts.get(s) ?? 0) + 1);
+}
+const humanize = (slug: string) =>
+  slug.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+const seriesList = [...counts.entries()]
+  .sort((a, b) => b[1] - a[1])
+  .map(([slug, count]) => {
+    const meta = SERIES.find((s) => s.slug === slug);
+    return {
+      slug,
+      title: meta?.title ?? humanize(slug),
+      description:
+        meta?.description ?? `${count} ${count === 1 ? "post" : "posts"}`,
+    };
+  });
 ---
 <header class="site-header">
   <div class="wrap bar">
@@ -16,7 +39,7 @@ import ThemeToggle from "./ThemeToggle.astro";
         Series <span aria-hidden="true">▾</span>
       </button>
       <div id="series-menu" class="series-menu" role="menu" hidden>
-        {SERIES.map((s) => (
+        {seriesList.map((s) => (
           <a href={`/series/${s.slug}`} role="menuitem">
             <span class="s-title">{s.title}</span>
             <span class="s-desc">{s.description}</span>
@@ -71,7 +94,15 @@ import ThemeToggle from "./ThemeToggle.astro";
     position: absolute;
     top: calc(100% + 10px);
     left: 0;
-    width: 320px;
+    /* Lay series out top-to-bottom, 3 per column, then wrap into new columns. */
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    grid-auto-flow: column;
+    grid-auto-columns: 300px;
+    gap: 2px;
+    /* Never wider than the viewport; scroll horizontally if columns overflow. */
+    max-width: calc(100vw - 24px);
+    overflow-x: auto;
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -79,6 +110,9 @@ import ThemeToggle from "./ThemeToggle.astro";
     padding: 6px;
     z-index: 30;
   }
+  /* `display: grid` above out-specifies the UA [hidden] rule, so the closed
+     state must be declared explicitly or the menu stays open. */
+  .series-menu[hidden] { display: none; }
   .series-menu a {
     display: block;
     padding: 10px 12px;
@@ -104,7 +138,17 @@ import ThemeToggle from "./ThemeToggle.astro";
   @media (max-width: 640px) {
     .bar { flex-wrap: wrap; height: auto; padding: 9px 0; row-gap: 8px; gap: 14px; }
     .brand { font-size: 1rem; }
-    .series-menu { width: min(300px, calc(100vw - 24px)); left: auto; }
+    /* Single column, scroll vertically — horizontal columns don't fit phones. */
+    .series-menu {
+      grid-auto-flow: row;
+      grid-template-rows: none;
+      grid-auto-columns: auto;
+      width: min(320px, calc(100vw - 24px));
+      max-height: 70vh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      left: auto;
+    }
   }
 </style>
 
@@ -118,7 +162,8 @@ import ThemeToggle from "./ThemeToggle.astro";
     };
     trigger.addEventListener("click", (e) => {
       e.stopPropagation();
-      setOpen(menu.hidden);
+      // Toggle: `hidden` is typed `string | boolean`, so coerce to a boolean.
+      setOpen(Boolean(menu.hidden));
     });
     document.addEventListener("click", (e) => {
       if (!menu.hidden && !menu.contains(e.target as Node) && e.target !== trigger) {

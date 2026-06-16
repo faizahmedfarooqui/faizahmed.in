@@ -10,7 +10,7 @@ const { postCount } = Astro.props;
     <p class="bio">{AUTHOR.bio}</p>
     <p class="links">
       {AUTHOR.links.map((l) => (
-        <a href={l.url} rel="me noopener" target="_blank">{l.label}</a>
+        <a href={l.url} rel="me noopener" target="_blank" download={l.download}>{l.label}</a>
       ))}
     </p>
   </div>
