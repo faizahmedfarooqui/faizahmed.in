@@ -1,11 +1,12 @@
 // Central site configuration. Edit values here, not across components.
 
-// Canonical host where the SEO-ranked blog URLs already live.
-// Every post's <link rel="canonical"> points at CANONICAL_ORIGIN/<slug>.
-export const CANONICAL_ORIGIN = "https://blog.faizahmed.in";
+// The single canonical host. We consolidated onto the apex domain:
+// blog.faizahmed.in/* now 301-redirects to faizahmed.in/* (Cloudflare), so every
+// <link rel="canonical">, OG/Twitter URL, JSON-LD URL, sitemap entry, and RSS
+// `site` must point at faizahmed.in — NOT the old blog. subdomain.
+export const CANONICAL_ORIGIN = "https://faizahmed.in";
 
-// Where the site is also served (primary app domain). Used for the sitemap
-// `site` value in astro.config.mjs. Both domains serve the same build.
+// Kept as a separate export for astro.config's `site`; same value now.
 export const SITE_ORIGIN = "https://faizahmed.in";
 
 export const SITE_TITLE = "Faiz Ahmed Farooqui";
@@ -31,8 +32,6 @@ export const GA_MEASUREMENT_ID = "G-3SZKBFTZH7";
 export const AUTHOR = {
   name: "Faiz Ahmed Farooqui",
   bio: "Software Architect based in Bangalore, India",
-  avatar:
-    "https://cdn.hashnode.com/res/hashnode/image/upload/v1639984646889/f69nr3aGZ.png",
   links: [
     { label: "GitHub", url: "https://github.com/faizahmedfarooqui" },
     { label: "LinkedIn", url: "https://linkedin.com/in/faizahmedfarooqui" },
@@ -41,6 +40,159 @@ export const AUTHOR = {
     // `download` makes browsers save it rather than preview inline.
     { label: "Resume", url: "/resume.pdf", download: true },
   ] as { label: string; url: string; download?: boolean }[],
+};
+
+// schema.org structured data for the person + site, reused on home/about.
+export const PERSON_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: AUTHOR.name,
+  url: `${CANONICAL_ORIGIN}/`,
+  jobTitle: "Principal Backend Engineer",
+  description: AUTHOR.bio,
+  sameAs: AUTHOR.links
+    .filter((l) => /github\.com|linkedin\.com/i.test(l.url))
+    .map((l) => l.url),
+};
+
+export const WEBSITE_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_TITLE,
+  url: `${CANONICAL_ORIGIN}/`,
+};
+
+// /uses — the toolset. Seeded from the stack referenced across the blog; edit
+// freely. Items marked "TODO" are personal specifics only Faiz can fill in.
+// `tag` links the item to its /tag/<tag> listing — but only when that tag has
+// posts (checked at build via getTags()); otherwise it renders as plain text.
+// So set the intended slug even if untagged today; the link lights up later.
+export const USES = [
+  {
+    category: "Languages & runtimes",
+    items: [
+      { label: "Node.js", tag: "nodejs" },
+      { label: "TypeScript", tag: "typescript" },
+      { label: "JavaScript", tag: "javascript" },
+      { label: "Bash" },
+    ],
+  },
+  {
+    category: "Backend & data",
+    items: [
+      { label: "PostgreSQL", tag: "postgresql" },
+      { label: "RabbitMQ", tag: "rabbitmq" },
+      { label: "NestJS", tag: "nestjs" },
+      { label: "gRPC", tag: "grpc" },
+      { label: "REST APIs", tag: "rest-api" },
+    ],
+  },
+  {
+    category: "Cloud & infrastructure",
+    items: [
+      { label: "AWS", tag: "aws" },
+      { label: "AWS Lambda", tag: "lambda" },
+      { label: "API Gateway", tag: "api-gateway" },
+      { label: "OpenStack", tag: "openstack" },
+      { label: "Cloudflare Pages", tag: "cloudflare" },
+    ],
+  },
+  {
+    category: "Containers & virtualization",
+    items: [
+      { label: "Docker", tag: "docker" },
+      { label: "Docker Compose", tag: "docker" },
+      { label: "Traefik", tag: "traefik" },
+      { label: "Firecracker", tag: "firecracker" },
+      { label: "QEMU", tag: "qemu" },
+      { label: "Open vSwitch", tag: "openvswitch" },
+    ],
+  },
+  {
+    category: "Observability & delivery",
+    items: [
+      { label: "OpenTelemetry", tag: "opentelemetry" },
+      { label: "Git & GitHub" },
+      { label: "GitHub Actions", tag: "github-actions" },
+    ],
+  },
+  {
+    category: "Editor & desktop",
+    items: [
+      { label: "TODO: editor" },
+      { label: "TODO: terminal" },
+      { label: "TODO: OS / hardware" },
+    ],
+  },
+];
+
+// /about "Core competencies" — same `tag` linking rule as USES. Flat lists per
+// group; items without a (matching) tag stay plain text.
+export const COMPETENCIES = [
+  {
+    group: "Backend & APIs",
+    items: [
+      { label: "Node.js", tag: "nodejs" },
+      { label: "TypeScript", tag: "typescript" },
+      { label: "PHP" },
+      { label: "NestJS", tag: "nestjs" },
+      { label: "Express", tag: "express" },
+      { label: "GraphQL" },
+      { label: "REST" },
+    ],
+  },
+  {
+    group: "Cloud & infra",
+    items: [
+      { label: "AWS", tag: "aws" },
+      { label: "Lambda", tag: "lambda" },
+      { label: "KMS" },
+      { label: "Nitro Enclaves" },
+      { label: "OpenStack", tag: "openstack" },
+      { label: "Docker", tag: "docker" },
+      { label: "GitLab CI/CD" },
+      { label: "GitHub Actions", tag: "github-actions" },
+    ],
+  },
+  {
+    group: "Databases",
+    items: [
+      { label: "PostgreSQL", tag: "postgresql" },
+      { label: "MySQL" },
+      { label: "MongoDB", tag: "mongodb" },
+    ],
+  },
+  {
+    group: "Architecture & tooling",
+    items: [
+      { label: "Microservices", tag: "microservices" },
+      { label: "Multi-tenant systems", tag: "multi-tenancy" },
+      { label: "OpenTelemetry", tag: "opentelemetry" },
+      { label: "API gateways", tag: "api-gateway" },
+      { label: "Nginx" },
+    ],
+  },
+  {
+    group: "Leadership",
+    items: [
+      { label: "Team mentorship" },
+      { label: "Trunk-based development" },
+      { label: "Release-velocity optimization" },
+    ],
+  },
+];
+
+// /now — what Faiz is focused on currently. KEEP THIS FRESH; update `updated`
+// whenever it changes (https://nownownow.com/about).
+export const NOW = {
+  updated: "2026-06-17",
+  intro:
+    "A snapshot of what I'm working on and thinking about right now.",
+  items: [
+    "Leading engineering as Lead Software Engineer at Talendy Holdings.",
+    "Writing the secret-keystore series on encrypting secrets with AWS KMS in Node.js.",
+    "Exploring microVMs (Firecracker, QEMU) and the engineering behind resilient FinTech systems.",
+  ],
 };
 
 // Series shown in the header nav. `slug` must match the `series:` frontmatter

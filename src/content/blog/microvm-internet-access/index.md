@@ -19,7 +19,7 @@ A tun/tap device is a virtual network kernel device often used for creating virt
 
 > However, one key point to note is that simply attaching the tun/tap device to firectl wouldn't grant internet access. A user needs to run specific commands – the focus of our discussion:
 
-For IP Address and Default Gateway, we are using things already prepared in my previous article - [Open vSwitch: Create TunTap Devices](https://blog.faizahmed.in/tuntap-devices-using-open-vswitch)
+For IP Address and Default Gateway, we are using things already prepared in my previous article - [Open vSwitch: Create TunTap Devices](/tuntap-devices-using-open-vswitch)
 
 ## Setup the IP Address
 

@@ -13,7 +13,7 @@ Virtualization is a powerful technology that allows you to run multiple operatin
 
 ## **Prerequisites:**
 
-* Prior to beginning, please verify that you have already installed QEMU on your system. You can refer to the following tutorial for guidance: [Getting Started with QEMU: Your Gateway to Virtual Machines](https://blog.faizahmed.in/preview/651fdcdab43180000f1f2581).
+* Prior to beginning, please verify that you have already installed QEMU on your system. You can refer to the following tutorial for guidance: [Getting Started with QEMU: Your Gateway to Virtual Machines](/preview/651fdcdab43180000f1f2581).
     
 * Additionally, ensure you have downloaded an Alpine Linux ISO file to your system.  
     You can download it from [here](https://alpinelinux.org/downloads/).

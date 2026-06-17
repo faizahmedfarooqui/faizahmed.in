@@ -2,5 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://blog.faizahmed.in/sitemap.xml
 Sitemap: https://faizahmed.in/sitemap.xml

@@ -9,7 +9,7 @@ series: encryption
 
 ---
 
-> **Part 2 of 3** on [`@faizahmed/secret-keystore`](https://www.npmjs.com/package/@faizahmed/secret-keystore). Part 1 covered the [threat model](https://blog.faizahmed.in/nodejs-secrets-threat-model-aws-kms); this part is pure hands-on. By the end you'll have an encrypted `.env` and know every command that touches it.
+> **Part 2 of 3** on [`@faizahmed/secret-keystore`](https://www.npmjs.com/package/@faizahmed/secret-keystore). Part 1 covered the [threat model](/nodejs-secrets-threat-model-aws-kms); this part is pure hands-on. By the end you'll have an encrypted `.env` and know every command that touches it.
 
 ## Step 0: a KMS key and a scoped IAM policy
 
@@ -226,4 +226,4 @@ import    Encrypt an existing plaintext .env in place
 
 That's the full CLI. Everything auto-detects `.env`/JSON/YAML from the extension, and everything takes the same `--kms-key-id`, `--region`, and `--use-credentials` flags.
 
-**Next:** [**Part 3 — Loading Secrets Without Leaking Them →**](https://blog.faizahmed.in/secret-keystore-runtime-config-loader-nodejs) — the `config()` loader, the keystore API, TTL for Lambda, Docker, production rotation, and Nitro attestation.
+**Next:** [**Part 3 — Loading Secrets Without Leaking Them →**](/secret-keystore-runtime-config-loader-nodejs) — the `config()` loader, the keystore API, TTL for Lambda, Docker, production rotation, and Nitro attestation.

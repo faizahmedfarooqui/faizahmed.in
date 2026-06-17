@@ -15,6 +15,22 @@ const PAGES = [
     excerpt: "About Faiz Ahmed Farooqui — background, experience, and skills.",
   },
   {
+    title: "Uses",
+    url: "/uses",
+    tags: ["uses", "tools", "stack", "setup", "gear"],
+    series: null,
+    date: "",
+    excerpt: "The languages, tools, cloud, and infrastructure I work with.",
+  },
+  {
+    title: "Now",
+    url: "/now",
+    tags: ["now", "current", "focus"],
+    series: null,
+    date: "",
+    excerpt: "What I'm focused on right now.",
+  },
+  {
     title: "RSS Feed",
     url: "/rss.xml",
     tags: ["rss", "feed", "subscribe", "atom"],

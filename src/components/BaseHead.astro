@@ -9,6 +9,10 @@ interface Props {
   image?: string | null;
   type?: "website" | "article";
   publishedTime?: Date;
+  // schema.org structured data — one object or an array, rendered as JSON-LD.
+  jsonLd?: object | object[];
+  // Optional topic-specific feed for autodiscovery (in addition to the main one).
+  feed?: { title: string; href: string };
 }
 
 const {
@@ -18,11 +22,18 @@ const {
   image,
   type = "website",
   publishedTime,
+  jsonLd,
+  feed,
 } = Astro.props;
 
+// Escape "<" so a "</script>" inside any string can't break out of the tag.
+const jsonLdHtml = jsonLd
+  ? JSON.stringify(jsonLd).replace(/</g, "\\u003c")
+  : null;
+
 const pageTitle = title ? `${title} · ${SITE_TITLE}` : SITE_TITLE;
-// Canonical always points at blog.faizahmed.in so the SEO-ranked URL keeps the
-// credit, regardless of which host served the page.
+// Canonical points at the single apex host (faizahmed.in). The old
+// blog.faizahmed.in URLs 301-redirect here, so this consolidates ranking signals.
 const canonical = new URL(canonicalPath, CANONICAL_ORIGIN).href;
 // Self-hosted default OG image (public/og-default.png); no external image host.
 const ogImage = image ?? new URL("/og-default.png", CANONICAL_ORIGIN).href;
@@ -52,4 +63,12 @@ const ogImage = image ?? new URL("/og-default.png", CANONICAL_ORIGIN).href;
 <meta name="twitter:image" content={ogImage} />
 
 <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/rss.xml" />
+{feed && <link rel="alternate" type="application/rss+xml" title={feed.title} href={feed.href} />}
+
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#1d9e75" />
+
+{jsonLdHtml && <script type="application/ld+json" is:inline set:html={jsonLdHtml} />}

@@ -30,7 +30,7 @@ Before we explore advanced QEMU options, ensure you have the following prerequis
 6. QEMU's EFI image for UEFI-based virtual machines.
     
 
-If you lack any of these prerequisites, you can obtain them by following the instructions in the provided link: "[Creating a Lightweight Alpine Linux Virtual Machine on macOS with QEMU](https://blog.faizahmed.in/preview/652cf5d76d6452000fece544)."
+If you lack any of these prerequisites, you can obtain them by following the instructions in the provided link: "[Creating a Lightweight Alpine Linux Virtual Machine on macOS with QEMU](/preview/652cf5d76d6452000fece544)."
 
 ## **Navigating Advanced QEMU Options:**
 

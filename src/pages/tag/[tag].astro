@@ -21,9 +21,13 @@ const { posts } = Astro.props;
   title={`#${tag}`}
   description={`Posts tagged ${tag}.`}
   canonicalPath={`/tag/${tag}`}
+  feed={{ title: `#${tag} · feed`, href: `/tag/${tag}/rss.xml` }}
 >
   <h1 class="page-title">#{tag}</h1>
-  <p class="count">{posts.length} {posts.length === 1 ? "post" : "posts"}</p>
+  <p class="count">
+    {posts.length} {posts.length === 1 ? "post" : "posts"}
+    <a class="feed-link" href={`/tag/${tag}/rss.xml`}>RSS</a>
+  </p>
   <div class="feed">
     {posts.map((post) => <PostCard post={post} />)}
   </div>
@@ -32,4 +36,5 @@ const { posts } = Astro.props;
 <style>
   .page-title { margin: 2.2rem 0 0.2rem; }
   .count { color: var(--text-faint); margin: 0 0 1rem; font-size: 0.9rem; }
+  .feed-link { margin-left: 10px; }
 </style>

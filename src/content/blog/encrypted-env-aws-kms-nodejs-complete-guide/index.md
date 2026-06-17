@@ -11,7 +11,7 @@ series: encryption
 
 A year ago I would have told you a `.env` file was fine. Then we patched a CVSS 10.0 RCE in Next.js ([CVE-2025-66478](https://nextjs.org/blog/CVE-2025-66478)) and spent the next two days rotating *every* secret we owned — because we couldn't prove which ones an attacker could have read. They were all sitting in `process.env`. One `env` dump away from gone.
 
-I wrote about that incident and the first version of the fix in [**Stop Putting Secrets in process.env**](https://blog.faizahmed.in/secret-keystore). This guide is the follow-up: the package grew up. It now has a real CLI, a zero-config runtime loader, key rotation, and a test suite that runs on every commit. This is the complete, current picture of `@faizahmed/secret-keystore` — and a map to the deep-dives.
+I wrote about that incident and the first version of the fix in [**Stop Putting Secrets in process.env**](/secret-keystore). This guide is the follow-up: the package grew up. It now has a real CLI, a zero-config runtime loader, key rotation, and a test suite that runs on every commit. This is the complete, current picture of `@faizahmed/secret-keystore` — and a map to the deep-dives.
 
 > **The one idea:** the only thing a developer ever touches is a **KMS Key ID** — which is *not* a secret. No private keys, no passphrases, no key material to leak. AWS KMS holds the keys server-side and gates them with IAM. Decrypted values live **only in memory**, never in `process.env`, never on disk. So the blast radius of the next RCE is a handful of keys your code explicitly asked for — not the whole vault.
 
@@ -50,11 +50,11 @@ API_KEY=ENC[AQICAHh2nZPq...]
 
 This is a **pillar + cluster**. Start wherever your question lives:
 
-*   [**Part 1 — Your .env Is a Loaded Gun**](https://blog.faizahmed.in/nodejs-secrets-threat-model-aws-kms): the threat model. Why `process.env` is the problem, what "blast radius" actually means, how KMS envelope encryption works for symmetric *and* RSA keys, and where `dotenv`, `dotenvx`, SOPS, and Secrets Manager fit. *Read this if you want the "why."*
+*   [**Part 1 — Your .env Is a Loaded Gun**](/nodejs-secrets-threat-model-aws-kms): the threat model. Why `process.env` is the problem, what "blast radius" actually means, how KMS envelope encryption works for symmetric *and* RSA keys, and where `dotenv`, `dotenvx`, SOPS, and Secrets Manager fit. *Read this if you want the "why."*
     
-*   [**Part 2 — Encrypt Your .env with One Command**](https://blog.faizahmed.in/secret-keystore-cli-encrypt-env-aws-kms): the CLI. Create a KMS key, scope an IAM policy, then `encrypt`, `decrypt`, `rotate`, `edit`, `init`, `keys`, `status`, `import`, and `run` — every command, copy-paste ready. *Read this if you want to ship today.*
+*   [**Part 2 — Encrypt Your .env with One Command**](/secret-keystore-cli-encrypt-env-aws-kms): the CLI. Create a KMS key, scope an IAM policy, then `encrypt`, `decrypt`, `rotate`, `edit`, `init`, `keys`, `status`, `import`, and `run` — every command, copy-paste ready. *Read this if you want to ship today.*
     
-*   [**Part 3 — Loading Secrets Without Leaking Them**](https://blog.faizahmed.in/secret-keystore-runtime-config-loader-nodejs): the runtime. The `config()` loader and the `SecretKeyStore` API, the `run` command, TTL and caching for Lambda cold starts, Docker, rotating keys in production, and Nitro Enclave attestation. *Read this for production.*
+*   [**Part 3 — Loading Secrets Without Leaking Them**](/secret-keystore-runtime-config-loader-nodejs): the runtime. The `config()` loader and the `SecretKeyStore` API, the `run` command, TTL and caching for Lambda cold starts, Docker, rotating keys in production, and Nitro Enclave attestation. *Read this for production.*
     
 
 ## What it is — and isn't
@@ -80,7 +80,7 @@ If you've already standardized on AWS Secrets Manager or SSM Parameter Store, ke
     
 *   **GitHub (+ runnable Next.js & NestJS examples):** [faizahmedfarooqui/secret-keystore](https://github.com/faizahmedfarooqui/secret-keystore)
     
-*   **The origin story:** [Stop Putting Secrets in process.env](https://blog.faizahmed.in/secret-keystore)
+*   **The origin story:** [Stop Putting Secrets in process.env](/secret-keystore)
     
 
-Next: [**Part 1 — Your .env Is a Loaded Gun →**](https://blog.faizahmed.in/nodejs-secrets-threat-model-aws-kms)
+Next: [**Part 1 — Your .env Is a Loaded Gun →**](/nodejs-secrets-threat-model-aws-kms)

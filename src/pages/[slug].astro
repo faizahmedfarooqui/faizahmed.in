@@ -3,23 +3,71 @@ import { Image, getImage } from "astro:assets";
 import { render } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import AuthorCard from "../components/AuthorCard.astro";
-import { getPosts, postSlug, readMinutes, formatDate } from "../lib/posts";
-import { CANONICAL_ORIGIN } from "../consts";
+import { getPosts, postSlug, readMinutes, formatDate, excerpt, type Post } from "../lib/posts";
+import { CANONICAL_ORIGIN, AUTHOR, SERIES } from "../consts";
 
 export async function getStaticPaths() {
-  const posts = await getPosts();
-  return posts.map((post) => ({
-    params: { slug: postSlug(post) },
-    props: { post },
-  }));
+  const posts = await getPosts(); // newest first
+  const lite = (p: Post | undefined) =>
+    p ? { slug: postSlug(p), title: p.data.title } : null;
+
+  return posts.map((post) => {
+    // Position within the series (chronological) + prev/next links.
+    let seriesNav = null;
+    if (post.data.series) {
+      const inSeries = posts
+        .filter((p) => p.data.series === post.data.series)
+        .sort(
+          (a, b) =>
+            a.data.datePublished.valueOf() - b.data.datePublished.valueOf(),
+        );
+      const i = inSeries.findIndex((p) => p.id === post.id);
+      seriesNav = {
+        slug: post.data.series,
+        title:
+          SERIES.find((s) => s.slug === post.data.series)?.title ??
+          post.data.series,
+        index: i,
+        total: inSeries.length,
+        prev: lite(inSeries[i - 1]),
+        next: lite(inSeries[i + 1]),
+      };
+    }
+
+    // Related: most shared tags, then most recent. Exclude same-series posts
+    // (already covered by the series nav) so the two sections don't overlap.
+    const related = posts
+      .filter(
+        (p) =>
+          p.id !== post.id &&
+          !(post.data.series && p.data.series === post.data.series),
+      )
+      .map((p) => ({
+        p,
+        shared: p.data.tags.filter((t) => post.data.tags.includes(t)).length,
+      }))
+      .filter((x) => x.shared > 0)
+      .sort(
+        (a, b) =>
+          b.shared - a.shared ||
+          b.p.data.datePublished.valueOf() - a.p.data.datePublished.valueOf(),
+      )
+      .slice(0, 3)
+      .map((x) => ({ slug: postSlug(x.p), title: x.p.data.title }));
+
+    return {
+      params: { slug: postSlug(post) },
+      props: { post, seriesNav, related },
+    };
+  });
 }
 
-const { post } = Astro.props;
+const { post, seriesNav, related } = Astro.props;
 const { Content, headings } = await render(post);
 const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 const body = post.body ?? "";
 const mins = readMinutes(body);
-const desc = body.replace(/[#>*`_\-]/g, "").trim().slice(0, 160);
+const desc = excerpt(body, 160);
 // Social-card image: a 1200px-wide JPEG derivative on the canonical host —
 // not the multi-MB original (which then no longer needs emitting at all).
 const ogCover = post.data.cover
@@ -28,6 +76,44 @@ const ogCover = post.data.cover
 const ogImage = ogCover
   ? new URL(ogCover.src, CANONICAL_ORIGIN).href
   : undefined;
+
+const canonicalUrl = new URL(`/${postSlug(post)}`, CANONICAL_ORIGIN).href;
+const published = post.data.datePublished.toISOString();
+const blogPosting = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.data.title,
+  description: desc,
+  datePublished: published,
+  dateModified: published,
+  author: { "@type": "Person", name: AUTHOR.name, url: `${CANONICAL_ORIGIN}/` },
+  publisher: { "@type": "Person", name: AUTHOR.name },
+  mainEntityOfPage: canonicalUrl,
+  url: canonicalUrl,
+  ...(ogImage ? { image: ogImage } : {}),
+  ...(post.data.tags.length ? { keywords: post.data.tags.join(", ") } : {}),
+};
+const breadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: `${CANONICAL_ORIGIN}/` },
+    ...(seriesNav
+      ? [{
+          "@type": "ListItem",
+          position: 2,
+          name: seriesNav.title,
+          item: `${CANONICAL_ORIGIN}/series/${seriesNav.slug}`,
+        }]
+      : []),
+    {
+      "@type": "ListItem",
+      position: seriesNav ? 3 : 2,
+      name: post.data.title,
+      item: canonicalUrl,
+    },
+  ],
+};
 ---
 <BaseLayout
   title={post.data.title}
@@ -36,6 +122,7 @@ const ogImage = ogCover
   image={ogImage}
   type="article"
   publishedTime={post.data.datePublished}
+  jsonLd={[blogPosting, breadcrumb]}
 >
   <div class="post-wrap">
   <div class="post-main">
@@ -68,6 +155,40 @@ const ogImage = ogCover
       <Content />
     </div>
   </article>
+
+  {seriesNav && (
+    <nav class="series-nav" aria-label="Series navigation">
+      <p class="sn-meta">
+        Part {seriesNav.index + 1} of {seriesNav.total} in{" "}
+        <a href={`/series/${seriesNav.slug}`}>{seriesNav.title}</a>
+      </p>
+      <div class="sn-links">
+        {seriesNav.prev ? (
+          <a class="sn-card sn-prev" href={`/${seriesNav.prev.slug}`}>
+            <span class="sn-dir">← Previous</span>
+            <span class="sn-title">{seriesNav.prev.title}</span>
+          </a>
+        ) : <span />}
+        {seriesNav.next ? (
+          <a class="sn-card sn-next" href={`/${seriesNav.next.slug}`}>
+            <span class="sn-dir">Next →</span>
+            <span class="sn-title">{seriesNav.next.title}</span>
+          </a>
+        ) : <span />}
+      </div>
+    </nav>
+  )}
+
+  {related.length > 0 && (
+    <section class="related" aria-label="Related posts">
+      <h2>Related posts</h2>
+      <ul>
+        {related.map((r) => (
+          <li><a href={`/${r.slug}`}>{r.title}</a></li>
+        ))}
+      </ul>
+    </section>
+  )}
 
   <AuthorCard />
   </div>
@@ -141,6 +262,39 @@ const ogImage = ogCover
   @media (max-width: 1024px) {
     .post-wrap { grid-template-columns: minmax(0, 1fr); max-width: var(--reading); margin: 0 auto; }
     .post-toc { display: none; }
+  }
+
+  /* Series navigation (prev/next within the series). */
+  .series-nav { margin: 2.5rem 0 1rem; }
+  .sn-meta { margin: 0 0 0.7rem; font-size: 0.85rem; color: var(--text-faint); }
+  .sn-links { display: flex; gap: 14px; }
+  .sn-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    transition: border-color 0.15s ease;
+  }
+  .sn-card:hover { border-color: var(--accent); text-decoration: none; }
+  .sn-next { text-align: right; }
+  .sn-dir { font-size: 0.78rem; color: var(--accent); }
+  .sn-title { font-weight: 700; line-height: 1.35; }
+
+  /* Related posts. */
+  .related { margin: 2rem 0 1rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+  .related h2 { font-size: 1.1rem; margin: 0 0 0.6rem; }
+  .related ul { list-style: none; margin: 0; padding: 0; }
+  .related li { padding: 0.35rem 0; }
+  .related a { color: var(--text); }
+  .related a:hover { color: var(--accent); }
+
+  @media (max-width: 520px) {
+    .sn-links { flex-direction: column; }
+    .sn-next { text-align: left; }
   }
 </style>
 

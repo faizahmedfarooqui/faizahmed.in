@@ -1,16 +1,20 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import RepoCard from "../components/RepoCard.astro";
+import TechLink from "../components/TechLink.astro";
 import { getFeaturedRepos } from "../lib/github";
-import { AUTHOR, yearsOfExperience } from "../consts";
+import { getTags } from "../lib/posts";
+import { AUTHOR, yearsOfExperience, PERSON_JSONLD, COMPETENCIES } from "../consts";
 
 const exp = yearsOfExperience();
 const repos = await getFeaturedRepos();
+const tags = new Set(await getTags());
 ---
 <BaseLayout
   title="About"
   description={`Principal Backend Engineer with ${exp}+ years of experience designing and scaling cloud-native, multi-tenant systems in fintech, healthcare, and SaaS.`}
   canonicalPath="/about"
+  jsonLd={PERSON_JSONLD}
 >
   <article class="about">
     <header class="about-head">
@@ -109,46 +113,17 @@ const repos = await getFeaturedRepos();
         <section>
           <h2>Core competencies</h2>
           <ul class="comp">
-            <li>
-              <strong>Backend &amp; APIs</strong> —
-              <a href="https://nodejs.org" target="_blank" rel="noopener">Node.js</a>,
-              <a href="https://www.typescriptlang.org" target="_blank" rel="noopener">TypeScript</a>,
-              <a href="https://www.php.net" target="_blank" rel="noopener">PHP</a>,
-              <a href="https://nestjs.com" target="_blank" rel="noopener">NestJS</a>,
-              <a href="https://expressjs.com" target="_blank" rel="noopener">Express</a>,
-              <a href="https://graphql.org" target="_blank" rel="noopener">GraphQL</a>, REST
-            </li>
-            <li>
-              <strong>Cloud &amp; infra</strong> —
-              <a href="https://aws.amazon.com" target="_blank" rel="noopener">AWS</a>
-              (<a href="https://aws.amazon.com/waf/" target="_blank" rel="noopener">WAF</a>,
-              <a href="https://aws.amazon.com/ecs/" target="_blank" rel="noopener">ECS</a>,
-              <a href="https://aws.amazon.com/lambda/" target="_blank" rel="noopener">Lambda</a>,
-              <a href="https://aws.amazon.com/kms/" target="_blank" rel="noopener">KMS</a>,
-              <a href="https://aws.amazon.com/ec2/nitro/nitro-enclaves/" target="_blank" rel="noopener">Nitro Enclaves</a>,
-              <a href="https://aws.amazon.com/ses/" target="_blank" rel="noopener">SES</a>),
-              <a href="https://www.openstack.org" target="_blank" rel="noopener">OpenStack</a>,
-              <a href="https://maas.io" target="_blank" rel="noopener">MaaS</a>,
-              <a href="https://www.docker.com" target="_blank" rel="noopener">Docker</a>,
-              <a href="https://docs.gitlab.com/ee/ci/" target="_blank" rel="noopener">GitLab CI/CD</a>,
-              <a href="https://bitbucket.org/product/features/pipelines" target="_blank" rel="noopener">BitBucket CI</a>,
-              <a href="https://github.com/features/actions" target="_blank" rel="noopener">GitHub Actions</a>
-            </li>
-            <li>
-              <strong>Databases</strong> —
-              <a href="https://www.postgresql.org" target="_blank" rel="noopener">PostgreSQL</a>,
-              <a href="https://www.mysql.com" target="_blank" rel="noopener">MySQL</a>,
-              <a href="https://www.mongodb.com" target="_blank" rel="noopener">MongoDB</a>
-            </li>
-            <li>
-              <strong>Architecture &amp; tooling</strong> — Microservices, multi-tenant systems,
-              observability (<a href="https://opentelemetry.io" target="_blank" rel="noopener">OpenTelemetry</a>,
-              <a href="https://www.zabbix.com" target="_blank" rel="noopener">Zabbix</a>),
-              API gateways (<a href="https://aws.amazon.com/api-gateway/" target="_blank" rel="noopener">AWS</a>,
-              <a href="https://apisix.apache.org" target="_blank" rel="noopener">APISIX</a>,
-              <a href="https://nginx.org" target="_blank" rel="noopener">Nginx</a>)
-            </li>
-            <li><strong>Leadership</strong> — Team mentorship, trunk-based development, release-velocity optimization</li>
+            {COMPETENCIES.map((g) => (
+              <li>
+                <strong>{g.group}</strong> —{" "}
+                {g.items.map((it, i) => (
+                  <Fragment>
+                    {i > 0 ? ", " : ""}
+                    <TechLink label={it.label} tag={it.tag} tags={tags} />
+                  </Fragment>
+                ))}
+              </li>
+            ))}
           </ul>
         </section>
 

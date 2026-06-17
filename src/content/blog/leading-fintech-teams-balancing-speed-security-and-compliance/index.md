@@ -74,17 +74,17 @@ FinTech leaders constantly balance:
 
 This concludes the **FinTech 101 for Engineering Leaders** series. We’ve explored:
 
-1. [Fundamentals of FinTech](https://blog.faizahmed.in/fintech-fundamentals-every-engineering-leader-should-know-2025-edition)
+1. [Fundamentals of FinTech](/fintech-fundamentals-every-engineering-leader-should-know-2025-edition)
     
-2. [Core Pillars across payments, lending, and wealth](https://blog.faizahmed.in/core-pillars-of-fintech-payments-lending-wealth-and-beyond)
+2. [Core Pillars across payments, lending, and wealth](/core-pillars-of-fintech-payments-lending-wealth-and-beyond)
     
-3. [APIs, security, and compliance foundations](https://blog.faizahmed.in/apis-security-and-compliance-the-technical-backbone-of-fintech)
+3. [APIs, security, and compliance foundations](/apis-security-and-compliance-the-technical-backbone-of-fintech)
     
-4. [Scaling and resilience practices](https://blog.faizahmed.in/building-scalable-and-resilient-fintech-systems)
+4. [Scaling and resilience practices](/building-scalable-and-resilient-fintech-systems)
     
-5. [Trends shaping the future](https://blog.faizahmed.in/trends-shaping-the-future-of-fintech)
+5. [Trends shaping the future](/trends-shaping-the-future-of-fintech)
     
-6. [Leadership practices for FinTech teams](https://blog.faizahmed.in/leading-fintech-teams-balancing-speed-security-and-compliance)
+6. [Leadership practices for FinTech teams](/leading-fintech-teams-balancing-speed-security-and-compliance)
     
 
 Together, these posts form a **practical playbook** for engineering leaders who want to thrive in one of the most complex and fast-moving industries.

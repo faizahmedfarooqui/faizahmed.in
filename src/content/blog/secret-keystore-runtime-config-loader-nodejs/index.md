@@ -9,7 +9,7 @@ series: encryption
 
 ---
 
-> **Part 3 of 3** on [`@faizahmed/secret-keystore`](https://www.npmjs.com/package/@faizahmed/secret-keystore). [Part 1](https://blog.faizahmed.in/nodejs-secrets-threat-model-aws-kms) was the threat model; [Part 2](https://blog.faizahmed.in/secret-keystore-cli-encrypt-env-aws-kms) was the CLI. This part is how your app reads secrets at runtime — safely.
+> **Part 3 of 3** on [`@faizahmed/secret-keystore`](https://www.npmjs.com/package/@faizahmed/secret-keystore). [Part 1](/nodejs-secrets-threat-model-aws-kms) was the threat model; [Part 2](/secret-keystore-cli-encrypt-env-aws-kms) was the CLI. This part is how your app reads secrets at runtime — safely.
 
 You've got an encrypted `.env`. Now your app needs the plaintext, at runtime, without recreating the blast radius you just removed. There are two ways in.
 
@@ -50,7 +50,7 @@ I'd avoid it. The point of the library is to *not* do that.
 
 ## Option B: `run` — for apps you don't want to touch
 
-Can't or don't want to change app code? Use the CLI's `run` (covered in [Part 2](https://blog.faizahmed.in/secret-keystore-cli-encrypt-env-aws-kms)) to inject secrets into the child process's environment:
+Can't or don't want to change app code? Use the CLI's `run` (covered in [Part 2](/secret-keystore-cli-encrypt-env-aws-kms)) to inject secrets into the child process's environment:
 
 ```shell
 npx @faizahmed/secret-keystore run \
@@ -173,7 +173,7 @@ That's the win over baking plaintext env into an image or passing it as build ar
 
 Two flavors, both painless:
 
-*   **Rotate the KMS key** (re-wrap under a new key): the `rotate` command from [Part 2](https://blog.faizahmed.in/secret-keystore-cli-encrypt-env-aws-kms) decrypts with the old key and re-encrypts with the new one in one pass. Commit, redeploy.
+*   **Rotate the KMS key** (re-wrap under a new key): the `rotate` command from [Part 2](/secret-keystore-cli-encrypt-env-aws-kms) decrypts with the old key and re-encrypts with the new one in one pass. Commit, redeploy.
     
 *   **Rotate the secret values themselves**: edit, re-encrypt, redeploy. Because access is explicit and scoped, you're not hunting for every place that cached `process.env` — you change the source of truth and ship.
     
@@ -184,7 +184,7 @@ After an incident, this is the difference between "rotate the keys these code pa
 
 For high-assurance workloads, the library supports **AWS Nitro Enclave attestation**: KMS will only release plaintext to an enclave whose attestation document proves it's running the exact code you expect, and it handles the 5-minute attestation refresh for you. That's "runtime trust" — not just *can* this process decrypt, but *is it the code it claims to be*.
 
-I wrote a full explainer on how KMS, Nitro Enclaves, and OpenSSL CMS fit together in [**How AWS Nitro Enclaves Prove You're Running Secure Code**](https://blog.faizahmed.in/aws-nitro-enclaves-remote-attestation) — start there if attestation is on your roadmap.
+I wrote a full explainer on how KMS, Nitro Enclaves, and OpenSSL CMS fit together in [**How AWS Nitro Enclaves Prove You're Running Secure Code**](/aws-nitro-enclaves-remote-attestation) — start there if attestation is on your roadmap.
 
 ## Why you can trust it: tests, not vibes
 
@@ -199,13 +199,13 @@ Clone it, run `pnpm test`, read the code. The whole point of this project is red
 
 ## Wrapping up
 
-You started [Part 1](https://blog.faizahmed.in/nodejs-secrets-threat-model-aws-kms) with a `.env` that gave up everything in one `env` dump. You end here with: ciphertext at rest, decryption on demand into an access-controlled in-memory store, secrets that never enter `process.env`, one-command rotation, and — if you need it — cryptographic proof of what's running.
+You started [Part 1](/nodejs-secrets-threat-model-aws-kms) with a `.env` that gave up everything in one `env` dump. You end here with: ciphertext at rest, decryption on demand into an access-controlled in-memory store, secrets that never enter `process.env`, one-command rotation, and — if you need it — cryptographic proof of what's running.
 
 *   **Install:** `npm install @faizahmed/secret-keystore`
     
 *   **Repo + runnable Next.js / NestJS examples:** [faizahmedfarooqui/secret-keystore](https://github.com/faizahmedfarooqui/secret-keystore)
     
-*   **The origin story:** [Stop Putting Secrets in process.env](https://blog.faizahmed.in/secret-keystore)
+*   **The origin story:** [Stop Putting Secrets in process.env](/secret-keystore)
     
 
 If you ship Node on AWS and you've ever had to "rotate everything and hope," this is the pattern I wish I'd had before the incident — not after.

@@ -9,7 +9,7 @@ series: encryption
 
 ---
 
-> **Part 1 of 3** in a deep-dive on [`@faizahmed/secret-keystore`](https://www.npmjs.com/package/@faizahmed/secret-keystore). New here? Start with the [Complete Guide](https://blog.faizahmed.in/encrypted-env-aws-kms-nodejs-complete-guide). For the original incident write-up, see [Stop Putting Secrets in process.env](https://blog.faizahmed.in/secret-keystore).
+> **Part 1 of 3** in a deep-dive on [`@faizahmed/secret-keystore`](https://www.npmjs.com/package/@faizahmed/secret-keystore). New here? Start with the [Complete Guide](/encrypted-env-aws-kms-nodejs-complete-guide). For the original incident write-up, see [Stop Putting Secrets in process.env](/secret-keystore).
 
 Most "secrets management" advice stops at *don't commit your* `.env`. That's table stakes, and it's not the part that hurts you. The part that hurts you is what happens **the moment your process is compromised**.
 
@@ -114,4 +114,4 @@ What you *gain* is the thing that mattered during our incident: **no single acti
 
 That's the trade, stated plainly. If it fits your blast-radius goals, the next part gets your hands dirty.
 
-**Next:** [**Part 2 — Encrypt Your .env with One Command →**](https://blog.faizahmed.in/secret-keystore-cli-encrypt-env-aws-kms) — KMS key setup, a least-privilege IAM policy, and a tour of every CLI command.
+**Next:** [**Part 2 — Encrypt Your .env with One Command →**](/secret-keystore-cli-encrypt-env-aws-kms) — KMS key setup, a least-privilege IAM policy, and a tour of every CLI command.

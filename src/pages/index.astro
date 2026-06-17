@@ -4,37 +4,33 @@ import PostCard from "../components/PostCard.astro";
 import RepoCard from "../components/RepoCard.astro";
 import { getPosts } from "../lib/posts";
 import { getFeaturedRepos } from "../lib/github";
-import { AUTHOR, EXPERIENCE } from "../consts";
+import { AUTHOR, EXPERIENCE, PERSON_JSONLD, WEBSITE_JSONLD } from "../consts";
 
-// Served at both faizahmed.in/ and blog.faizahmed.in/ (same build).
+// Served from faizahmed.in (blog.faizahmed.in 301-redirects here).
 // Short profile hero, then the latest-articles feed. Full profile lives at /about.
 const posts = await getPosts();
 const latest = posts.slice(0, 4);
 const repos = await getFeaturedRepos();
 ---
-<BaseLayout canonicalPath="/">
+<BaseLayout canonicalPath="/" jsonLd={[PERSON_JSONLD, WEBSITE_JSONLD]}>
   <section class="hero">
-    <p class="kicker">Principal Backend Engineer · Bangalore, India</p>
-    <h1>{AUTHOR.name}</h1>
-    <p class="lede">
-      I design and scale cloud-native, multi-tenant systems across fintech,
-      healthcare, and SaaS — secure payments, real-time platforms, and backend
-      architecture on AWS and OpenStack. I write about the engineering behind it.
-    </p>
-    <p class="hero-links">
-      <a href="/about">About me →</a>
-      {AUTHOR.links.map((l) => (
-        <a href={l.url} rel="me noopener" target="_blank" download={l.download}>{l.label}</a>
-      ))}
-    </p>
-  </section>
-
-  <section class="featured">
-    <div class="col">
-      <h2>Featured work</h2>
-      {repos.map((repo) => <RepoCard repo={repo} />)}
+    <div class="hero-main">
+      <p class="kicker">Principal Backend Engineer · Bangalore, India</p>
+      <h1>{AUTHOR.name}</h1>
+      <p class="lede">
+        I design and scale cloud-native, multi-tenant systems across fintech,
+        healthcare, and SaaS — secure payments, real-time platforms, and backend
+        architecture on AWS and OpenStack. I write about the engineering behind it.
+      </p>
+      <p class="hero-links">
+        <a href="/about">About me →</a>
+        {AUTHOR.links.map((l) => (
+          <a href={l.url} rel="me noopener" target="_blank" download={l.download}>{l.label}</a>
+        ))}
+      </p>
     </div>
-    <div class="col">
+
+    <aside class="hero-work">
       <h2>Where I work</h2>
       <ul class="xp">
         {EXPERIENCE.map((e) => (
@@ -52,6 +48,22 @@ const repos = await getFeaturedRepos();
           </li>
         ))}
       </ul>
+    </aside>
+  </section>
+
+  <section class="featured">
+    <div class="col">
+      <h2>Featured work</h2>
+      {repos.map((repo) => <RepoCard repo={repo} />)}
+    </div>
+    <div class="col">
+      <h2>Bolt.SH</h2>
+      <p class="bolt-blurb">
+        An <a href="https://www.openstack.org" target="_blank" rel="noopener">OpenStack</a>-powered
+        IaaS data center I designed and built at GeekyAnts — VM orchestration,
+        virtual networking, and load balancing that let teams self-serve infra.
+      </p>
+      <a class="bolt-more" href="/bolt">Watch the walkthrough series →</a>
     </div>
   </section>
 
@@ -65,21 +77,25 @@ const repos = await getFeaturedRepos();
 </BaseLayout>
 
 <style>
-  .hero { padding: 2.8rem 0 1.5rem; border-bottom: 1px solid var(--border); }
+  /* Hero: intro on the left, "Where I work" rail on the right. */
+  .hero {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 48px;
+    align-items: start;
+    padding: 2.8rem 0 1.8rem;
+    border-bottom: 1px solid var(--border);
+  }
   .kicker { color: var(--text-faint); font-size: 0.85rem; margin: 0 0 0.4rem; }
   .hero h1 { margin: 0 0 0.8rem; font-size: 2.1rem; }
   .lede { color: var(--text-soft); max-width: 60ch; margin: 0 0 1.2rem; }
   .hero-links { display: flex; gap: 18px; flex-wrap: wrap; margin: 0; font-size: 0.92rem; }
+  .hero-work h2 { margin: 0 0 0.6rem; font-size: 1.05rem; }
 
-  .featured {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 28px;
-    padding: 2rem 0 0.5rem;
-  }
-  .featured h2 { margin: 0 0 1rem; font-size: 1.25rem; }
   .xp { list-style: none; padding: 0; margin: 0; }
   .xp li { padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
+  .xp li:first-child { padding-top: 0; }
+  .xp li:last-child { border-bottom: none; }
   .xp-when {
     display: inline-block;
     font-size: 0.7rem;
@@ -92,9 +108,23 @@ const repos = await getFeaturedRepos();
   .xp-co { display: block; color: var(--text-soft); font-size: 0.9rem; }
   .xp-period { color: var(--text-faint); }
 
+  .featured {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    padding: 2rem 0 0.5rem;
+  }
+  .featured h2 { margin: 0 0 1rem; font-size: 1.25rem; }
+
+  .bolt-blurb { color: var(--text-soft); font-size: 0.92rem; margin: 0 0 1rem; }
+  .bolt-more { display: inline-block; font-size: 0.92rem; }
+
   .feed-heading { margin-top: 2.2rem; }
   .feed-more { margin: 0 0 2.5rem; font-size: 0.95rem; }
 
+  @media (max-width: 820px) {
+    .hero { grid-template-columns: 1fr; gap: 1.8rem; }
+  }
   @media (max-width: 640px) {
     .featured { grid-template-columns: 1fr; gap: 1.5rem; }
   }

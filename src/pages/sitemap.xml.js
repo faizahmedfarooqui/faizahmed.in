@@ -4,7 +4,7 @@ import { SERIES, CANONICAL_ORIGIN } from "../consts";
 // A single sitemap.xml (not the sitemap-index.xml + sitemap-0.xml split that
 // @astrojs/sitemap produces). The site is well under the 50k-URL limit, so one
 // file is simpler and is what crawlers expect at /sitemap.xml. URLs use the
-// CANONICAL origin (blog.faizahmed.in) to match `<link rel="canonical">`.
+// CANONICAL origin (faizahmed.in) to match `<link rel="canonical">`.
 export async function GET() {
   const posts = await getPosts();
 
@@ -12,7 +12,7 @@ export async function GET() {
   const entries = new Map();
   const add = (path, lastmod) => entries.set(path, lastmod ?? entries.get(path));
 
-  for (const p of ["/", "/about", "/archive", "/bolt"]) add(p);
+  for (const p of ["/", "/about", "/uses", "/now", "/archive", "/bolt"]) add(p);
 
   for (const post of posts) {
     add(`/${postSlug(post)}`, post.data.datePublished.toISOString().slice(0, 10));

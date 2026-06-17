@@ -13,7 +13,7 @@ series: treafik
 
 In this post, I'll show you how to install Traefik Proxy — the cloud native application proxy in our Docker Compose file and utilize it in our architecture with a sample service container.
 
-Traefik Proxy was discussed in my previous post — [How much do you know "Traefik" proxy?](https://blog.faizahmed.in/how-much-do-you-know-traefik-proxy)
+Traefik Proxy was discussed in my previous post — [How much do you know "Traefik" proxy?](/how-much-do-you-know-traefik-proxy)
 
 As a baseline, I'm assuming you're familiar with [Docker](https://docs.docker.com/desktop/) and [Docker Compose](https://docs.docker.com/compose/) files.
 

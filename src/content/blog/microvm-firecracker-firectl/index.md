@@ -131,7 +131,7 @@ Note that:
 * `--tap-device` creates a tap device for networking. It accepts `<tap-name>/<tap-device's-mac-address>`.
     
 
-> To create a TunTap device, you can refer to my previous article where I have explained on [how to create such TunTap devices](https://blog.faizahmed.in/tuntap-devices-using-open-vswitch).
+> To create a TunTap device, you can refer to my previous article where I have explained on [how to create such TunTap devices](/tuntap-devices-using-open-vswitch).
 
 These simple steps allow you to run Firecracker microVMs.
 

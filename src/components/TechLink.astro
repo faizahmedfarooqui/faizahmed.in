@@ -1,0 +1,14 @@
+---
+// Renders a tool/competency label. If it maps to a tag that actually has posts,
+// it links INTERNALLY to that tag's listing (keeping readers on-site); otherwise
+// it's plain text. `tags` is the set of existing tag slugs (from getTags()).
+interface Props {
+  label: string;
+  tag?: string;
+  tags: string[] | Set<string>;
+}
+const { label, tag, tags } = Astro.props;
+const set = tags instanceof Set ? tags : new Set(tags);
+const href = tag && set.has(tag) ? `/tag/${tag}` : null;
+---
+{href ? <a href={href}>{label}</a> : <span class="tech-plain">{label}</span>}

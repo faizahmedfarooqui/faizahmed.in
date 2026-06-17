@@ -15,12 +15,12 @@ In this post, I'll demonstrate how to include Traefik Proxy — a cloud native a
 
 I've previously covered Traefik's principles in prior blogs —
 
-* [How much do you know "Traefik" proxy?](https://blog.faizahmed.in/how-much-do-you-know-traefik-proxy)
+* [How much do you know "Traefik" proxy?](/how-much-do-you-know-traefik-proxy)
     
-* [Traefik + Docker Compose](https://blog.faizahmed.in/traefik-docker-compose)
+* [Traefik + Docker Compose](/traefik-docker-compose)
     
 
-As a baseline, I'm assuming you're familiar with [Docker](https://docs.docker.com/desktop/), [Docker Compose](https://docs.docker.com/compose/) & [Traefik](https://blog.faizahmed.in/how-much-do-you-know-traefik-proxy).
+As a baseline, I'm assuming you're familiar with [Docker](https://docs.docker.com/desktop/), [Docker Compose](https://docs.docker.com/compose/) & [Traefik](/how-much-do-you-know-traefik-proxy).
 
 Let's get started —
 

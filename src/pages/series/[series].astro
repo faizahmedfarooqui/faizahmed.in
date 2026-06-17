@@ -24,9 +24,13 @@ const title = SERIES.find((s) => s.slug === series)?.title ?? series;
   title={title}
   description={`Posts in the ${title} series.`}
   canonicalPath={`/series/${series}`}
+  feed={{ title: `${title} · feed`, href: `/series/${series}/rss.xml` }}
 >
   <h1 class="page-title">{title}</h1>
-  <p class="count">{posts.length} {posts.length === 1 ? "post" : "posts"}</p>
+  <p class="count">
+    {posts.length} {posts.length === 1 ? "post" : "posts"}
+    <a class="feed-link" href={`/series/${series}/rss.xml`}>RSS</a>
+  </p>
   <div class="feed">
     {posts.map((post) => <PostCard post={post} />)}
     {posts.length === 0 && <p>No posts in this series yet.</p>}
@@ -36,4 +40,5 @@ const title = SERIES.find((s) => s.slug === series)?.title ?? series;
 <style>
   .page-title { margin: 2.2rem 0 0.2rem; }
   .count { color: var(--text-faint); margin: 0 0 1rem; font-size: 0.9rem; }
+  .feed-link { margin-left: 10px; }
 </style>

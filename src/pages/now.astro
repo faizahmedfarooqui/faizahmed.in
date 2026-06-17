@@ -1,0 +1,38 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { NOW } from "../consts";
+
+const updated = new Date(NOW.updated).toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+<BaseLayout
+  title="Now"
+  description="What Faiz Ahmed Farooqui is focused on right now."
+  canonicalPath="/now"
+>
+  <div class="reading now">
+    <h1 class="page-title">Now</h1>
+    <p class="updated">Updated {updated}</p>
+    <p class="intro">{NOW.intro}</p>
+    <ul>
+      {NOW.items.map((item) => <li>{item}</li>)}
+    </ul>
+    <p class="footnote">
+      This is a <a href="https://nownownow.com/about" target="_blank" rel="noopener">now page</a> —
+      a snapshot of my current focus, not a feed.
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .now { margin: 0 auto; }
+  .page-title { margin: 2.2rem 0 0.2rem; }
+  .updated { color: var(--text-faint); font-size: 0.85rem; margin: 0 0 1.4rem; }
+  .intro { color: var(--text-soft); margin: 0 0 1.2rem; }
+  .now ul { margin: 0 0 2rem; padding-left: 1.2rem; }
+  .now li { margin: 0.5rem 0; }
+  .footnote { color: var(--text-faint); font-size: 0.88rem; }
+</style>

@@ -25,6 +25,14 @@ export function readMinutes(body: string): number {
   return Math.max(1, Math.round(readingTime(body).minutes));
 }
 
+// Every tag that has at least one post (i.e. has a /tag/<tag> page). Used to
+// decide whether a tool/competency should link to its tag listing.
+export async function getTags(): Promise<string[]> {
+  const tags = new Set<string>();
+  for (const p of await getPosts()) for (const t of p.data.tags) tags.add(t);
+  return [...tags].sort((a, b) => a.localeCompare(b));
+}
+
 // Plain-text excerpt from markdown body: drop code fences, images, and markdown
 // punctuation (keeping link text). Adds an ellipsis when truncated.
 export function excerpt(body: string, max = 200): string {
