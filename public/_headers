@@ -1,0 +1,4 @@
+# Never let the kill-switch service worker get cached, so browsers always
+# re-fetch it and run the unregister logic.
+/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate
