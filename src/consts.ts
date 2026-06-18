@@ -25,9 +25,8 @@ export function yearsOfExperience(at: Date = new Date()): number {
   return years;
 }
 
-// Google Analytics 4 Measurement ID. (No GTM container exists, so GA4 is wired
-// directly — see src/components/Analytics.astro.)
-export const GA_MEASUREMENT_ID = "G-3SZKBFTZH7";
+// Analytics: Cloudflare Web Analytics (cookieless, no personal data, consent-exempt)
+// is enabled at the edge in the Cloudflare dashboard — no in-repo script, no GA4.
 
 export const AUTHOR = {
   name: "Faiz Ahmed Farooqui",

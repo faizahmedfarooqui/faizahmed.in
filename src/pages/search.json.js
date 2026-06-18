@@ -31,6 +31,14 @@ const PAGES = [
     excerpt: "What I'm focused on right now.",
   },
   {
+    title: "Privacy",
+    url: "/privacy",
+    tags: ["privacy", "cookies", "gdpr", "data"],
+    series: null,
+    date: "",
+    excerpt: "How this site handles data: cookieless analytics, no tracking.",
+  },
+  {
     title: "RSS Feed",
     url: "/rss.xml",
     tags: ["rss", "feed", "subscribe", "atom"],

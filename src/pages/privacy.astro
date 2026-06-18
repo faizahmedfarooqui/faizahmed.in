@@ -1,0 +1,77 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const updated = "June 17, 2026";
+---
+<BaseLayout
+  title="Privacy"
+  description="How faizahmed.in handles your data: cookieless analytics, no tracking, no personal data collected."
+  canonicalPath="/privacy"
+>
+  <div class="reading privacy">
+    <h1 class="page-title">Privacy</h1>
+    <p class="updated">Last updated {updated}</p>
+
+    <p>
+      This site (<strong>faizahmed.in</strong>) is a personal profile and blog. It is
+      built to respect your privacy: it sets <strong>no cookies</strong>, shows no ads,
+      and does not collect or store personal data about you.
+    </p>
+
+    <h2>Analytics</h2>
+    <p>
+      Visit statistics are measured with <strong>Cloudflare Web Analytics</strong>,
+      which is <strong>cookieless</strong> and privacy-first. It records aggregate page
+      views and performance — no cookies, no fingerprinting, no cross-site tracking, and
+      no data that identifies you. Because it collects no personal data, no consent
+      banner is required.
+    </p>
+
+    <h2>Embedded content</h2>
+    <p>
+      Some posts embed third-party content that only loads when you choose to use it:
+    </p>
+    <ul>
+      <li>
+        <strong>YouTube videos</strong> load only after you click the thumbnail. Until
+        then, nothing is requested from YouTube. Once you play a video, Google/YouTube
+        may set cookies under their own privacy policy.
+      </li>
+      <li>
+        <strong>Diagrams</strong> on a few posts load the Mermaid library from a public
+        CDN (jsDelivr) to render charts in your browser.
+      </li>
+    </ul>
+
+    <h2>Hosting</h2>
+    <p>
+      The site is hosted on <strong>Cloudflare Pages</strong> and served through
+      Cloudflare. Like any web host, Cloudflare processes basic request data (such as
+      your IP address) to deliver and secure the site. See Cloudflare's privacy policy
+      for details.
+    </p>
+
+    <h2>What the site does not do</h2>
+    <ul>
+      <li>No accounts, sign-ups, newsletter, or comment forms — nothing is collected from you.</li>
+      <li>No advertising or third-party tracking scripts.</li>
+      <li>External links open in a new tab and are governed by their own privacy policies.</li>
+    </ul>
+
+    <h2>Your data</h2>
+    <p>
+      Since no personal data is collected or stored, there is nothing to request, export,
+      or delete. If you have any privacy questions, reach me via the links on the
+      <a href="/about">About</a> page.
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .privacy { margin: 0 auto; }
+  .page-title { margin: 2.2rem 0 0.2rem; }
+  .updated { color: var(--text-faint); font-size: 0.85rem; margin: 0 0 1.6rem; }
+  .privacy h2 { font-size: 1.15rem; margin: 1.8rem 0 0.5rem; }
+  .privacy ul { padding-left: 1.2rem; }
+  .privacy li { margin: 0.4rem 0; }
+</style>

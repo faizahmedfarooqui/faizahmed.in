@@ -12,7 +12,7 @@ export async function GET() {
   const entries = new Map();
   const add = (path, lastmod) => entries.set(path, lastmod ?? entries.get(path));
 
-  for (const p of ["/", "/about", "/uses", "/now", "/archive", "/bolt"]) add(p);
+  for (const p of ["/", "/about", "/uses", "/now", "/archive", "/bolt", "/privacy"]) add(p);
 
   for (const post of posts) {
     add(`/${postSlug(post)}`, post.data.datePublished.toISOString().slice(0, 10));
