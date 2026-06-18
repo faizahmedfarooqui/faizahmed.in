@@ -233,31 +233,3 @@ sequenceDiagram
     Note right of ENC: No network, no SSH, no persistent storage
     ENC-->>EC2: Return only the necessary result via vsock
 ```
-
-The mermaid diagram is actually not showcasing the sequences, please copy+paste the below content in [mermaid.live](https://mermaid.live/)’s website to preview the above diagram in detail.
-
-```plaintext
-sequenceDiagram
-    autonumber
-    actor Dev as Developer / Service
-    participant CMS as OpenSSL CMS
-    participant S3 as Storage (S3/DB)
-    participant EC2 as EC2 Parent Instance
-    participant VS as vsock
-    participant ENC as Nitro Enclave
-    participant ATS as Nitro Attestation Service
-    participant KMS as AWS KMS
-    Dev->>CMS: Encrypt data with enclave's public cert (CMS envelope)
-    CMS->>S3: Store encrypted blob (e.g., sensitive.enc)
-    Dev->>EC2: Launch EC2 with Enclave (nitro-enclaves)
-    EC2-->>VS: Send encrypted blob via vsock
-    VS-->>ENC: Deliver encrypted blob to enclave
-    ENC->>ATS: Create attestation document (PCRs, image hash, nonce)
-    ENC->>KMS: Request Decrypt + attach attestation doc
-    KMS->>ATS: Verify enclave attestation (hardware root of trust)
-    ATS-->>KMS: OK if measurement & policy match
-    KMS-->>ENC: Return decrypted data key (not the CMK)
-    ENC->>ENC: Decrypt CMS envelope (process plaintext in-memory)
-    Note right of ENC: No network, no SSH, no persistent storage
-    ENC-->>EC2: Return only the necessary result via vsock
-```
