@@ -39,16 +39,24 @@ const props = Astro.props;
 
     <script>
       // Render any Mermaid diagrams (server-emitted <pre class="mermaid">).
+      // NOTE: we import Mermaid asynchronously and Rocket Loader defers this
+      // script, so the `load` event has already fired by the time Mermaid is
+      // ready — `startOnLoad` would never trigger. Render explicitly instead.
       if (document.querySelector("pre.mermaid")) {
         const mermaidUrl =
           "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
         import(/* @vite-ignore */ mermaidUrl)
-          .then(({ default: mermaid }) => {
+          .then(async ({ default: mermaid }) => {
             const dark = document.documentElement.dataset.theme === "dark";
             mermaid.initialize({
-              startOnLoad: true,
+              startOnLoad: false,
               theme: dark ? "dark" : "default",
             });
+            try {
+              await mermaid.run({ querySelector: "pre.mermaid" });
+            } catch (e) {
+              console.error("Mermaid render failed:", e);
+            }
           });
       }
     </script>
