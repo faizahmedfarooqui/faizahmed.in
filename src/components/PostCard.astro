@@ -14,7 +14,7 @@ const blurb = excerpt(body, featured ? 240 : 130);
 <article class:list={["post-card", { featured }]}>
   {cover && (
     <div class="pc-media">
-      <Image src={cover} alt="" width={featured ? 1000 : 640} loading={featured ? "eager" : "lazy"} />
+      <Image src={cover} alt={post.data.title} width={featured ? 1000 : 640} loading="lazy" />
     </div>
   )}
   <div class="pc-body">

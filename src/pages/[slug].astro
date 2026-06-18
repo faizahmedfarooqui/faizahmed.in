@@ -128,7 +128,7 @@ const breadcrumb = {
   <div class="post-main">
   <article class="post" data-pagefind-body>
     {post.data.cover && (
-      <Image class="cover" src={post.data.cover} alt="" />
+      <Image class="cover" src={post.data.cover} alt={post.data.title} priority />
     )}
     <h1 data-pagefind-meta="title">{post.data.title}</h1>
     <p class="post-meta">

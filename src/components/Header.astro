@@ -137,16 +137,21 @@ const seriesList = [...counts.entries()]
   @media (max-width: 640px) {
     .bar { flex-wrap: wrap; height: auto; padding: 9px 0; row-gap: 8px; gap: 14px; }
     .brand { font-size: 1rem; }
-    /* Single column, scroll vertically — horizontal columns don't fit phones. */
+    /* Anchor the menu to the header (full width with side gutters) rather than the
+       Series button — otherwise it overflows the viewport depending on where the
+       button lands in the wrapped header. Single column, scroll vertically. */
+    .series-dd { position: static; }
     .series-menu {
       grid-auto-flow: row;
       grid-template-rows: none;
       grid-auto-columns: auto;
-      width: min(320px, calc(100vw - 24px));
+      left: 12px;
+      right: 12px;
+      width: auto;
+      max-width: none;
       max-height: 70vh;
       overflow-x: hidden;
       overflow-y: auto;
-      left: auto;
     }
   }
 </style>

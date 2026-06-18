@@ -26,7 +26,18 @@ Scripts:
 node scripts/import-posts.mjs <export-dir>   # import a Hashnode export (one-time/bulk)
 node scripts/optimize-images.mjs             # downscale covers + body images
 node scripts/gen-icons.mjs                   # regenerate favicons from public/favicon.svg
+node scripts/indexnow.mjs [url...]           # ping IndexNow (Bing/Yandex) AFTER a deploy
 ```
+
+**After publishing a post** (once the deploy is live), ping IndexNow so Bing/Yandex
+crawl it quickly — Google ignores IndexNow:
+
+```bash
+node scripts/indexnow.mjs https://faizahmed.in/my-new-post   # or no args = whole sitemap
+```
+
+The verification key lives at `public/a97974d47d4441389c7f4eae25fa392f.txt`
+(served at `/<key>.txt`); the same key is in `scripts/indexnow.mjs`.
 
 ---
 
