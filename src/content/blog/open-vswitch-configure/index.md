@@ -4,7 +4,7 @@ datePublished: Sat Sep 23 2023 18:30:00 GMT+0000 (Coordinated Universal Time)
 cuid: clmymmzb3000009jw1aoge2mg
 slug: open-vswitch-configure
 cover: ./cover.jpg
-tags: linux, networking, openvswitch, ovs
+tags: linux, networking, openvswitch
 series: vcw
 
 ---

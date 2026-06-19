@@ -4,7 +4,7 @@ datePublished: Wed May 07 2025 10:30:41 GMT+0000 (Coordinated Universal Time)
 cuid: cmadss9jb000e09jud9261jsq
 slug: streaming-huge-json-in-nodejs
 cover: ./cover.jpg
-tags: nodejs, javascript, web-performance, backend-development, streamingdata, memory-management, json, scalablearchitecture, software-engineering, devtips
+tags: nodejs, javascript, web-performance, backend-engineering, streaming, memory-management, json, scalability, software-engineering, devtips
 series: scaling-javascript-nodejs
 
 ---

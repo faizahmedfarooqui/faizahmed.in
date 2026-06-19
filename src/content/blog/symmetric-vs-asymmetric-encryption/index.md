@@ -4,7 +4,7 @@ datePublished: Sun Mar 16 2025 12:30:00 GMT+0000 (Coordinated Universal Time)
 cuid: cm8d4f6mg000509jy8cpsd6pr
 slug: symmetric-vs-asymmetric-encryption
 cover: ./cover.jpg
-tags: symmetric-encryption, asymmetric-key-encryption, privacy, pcidss, pci-dss
+tags: symmetric-encryption, asymmetric-key-encryption, privacy, pci-dss
 series: encryption
 
 ---

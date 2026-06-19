@@ -16,12 +16,15 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.params;
 const { posts } = Astro.props;
+// Single-use tags are thin content — keep them navigable but out of the index.
+const thin = posts.length < 2;
 ---
 <BaseLayout
   title={`#${tag}`}
   description={`Posts tagged ${tag}.`}
   canonicalPath={`/tag/${tag}`}
   feed={{ title: `#${tag} · feed`, href: `/tag/${tag}/rss.xml` }}
+  noindex={thin}
 >
   <h1 class="page-title">#{tag}</h1>
   <p class="count">

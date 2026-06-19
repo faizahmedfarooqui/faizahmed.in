@@ -12,20 +12,23 @@ export async function GET() {
   const entries = new Map();
   const add = (path, lastmod) => entries.set(path, lastmod ?? entries.get(path));
 
-  for (const p of ["/", "/about", "/uses", "/now", "/archive", "/bolt", "/privacy"]) add(p);
+  for (const p of ["/", "/about", "/uses", "/now", "/archive", "/bolt", "/tags", "/privacy"]) add(p);
 
   for (const post of posts) {
     add(`/${postSlug(post)}`, post.data.datePublished.toISOString().slice(0, 10));
   }
 
   const series = new Set(SERIES.map((s) => s.slug));
-  const tags = new Set();
+  const tagCounts = new Map();
   for (const post of posts) {
     if (post.data.series) series.add(post.data.series);
-    for (const t of post.data.tags) tags.add(t);
+    for (const t of post.data.tags) tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1);
   }
   for (const s of series) add(`/series/${encodeURIComponent(s)}`);
-  for (const t of tags) add(`/tag/${encodeURIComponent(t)}`);
+  // Only list tag pages with 2+ posts; single-use tags are noindexed thin pages.
+  for (const [t, count] of tagCounts) {
+    if (count >= 2) add(`/tag/${encodeURIComponent(t)}`);
+  }
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

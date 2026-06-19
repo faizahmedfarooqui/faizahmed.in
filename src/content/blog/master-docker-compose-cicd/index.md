@@ -4,7 +4,7 @@ datePublished: Wed Jul 23 2025 08:52:37 GMT+0000 (Coordinated Universal Time)
 cuid: cmdfq6qbv002n02l1eeasf3fy
 slug: master-docker-compose-cicd
 cover: ./cover.jpg
-tags: postgresql, software-development, docker, nodejs, webdev, devops, containers, cicd, phpmyadmin, docker-compose, ci-cd, github-actions-1, backend-engineering
+tags: postgresql, software-engineering, docker, nodejs, web-development, devops, containers, ci-cd, phpmyadmin, docker-compose, github-actions-1, backend-engineering
 series: vcw
 
 ---

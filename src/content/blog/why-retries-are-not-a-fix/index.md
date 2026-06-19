@@ -4,7 +4,7 @@ datePublished: Sat Apr 18 2026 05:00:00 GMT+0000 (Coordinated Universal Time)
 cuid: cmo3vchay000421cs7qwg1i8n
 slug: why-retries-are-not-a-fix
 cover: ./cover.jpg
-tags: distributed-systems, system-design, background-jobs, nodejs, nestjs, queue
+tags: distributed-systems, system-design, background-jobs, nodejs, nestjs, queue-systems
 series: scaling-javascript-nodejs
 
 ---

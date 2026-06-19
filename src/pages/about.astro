@@ -36,8 +36,8 @@ const tags = new Set(await getTags());
             and scaling cloud-native, multi-tenant systems in fintech,
             healthcare, and SaaS. I work on secure digital payments, real-time
             data platforms, and backend architecture on
-            <a href="https://aws.amazon.com" target="_blank" rel="noopener">AWS</a> and
-            <a href="https://www.openstack.org" target="_blank" rel="noopener">OpenStack</a>,
+            <TechLink label="AWS" tag="aws" tags={tags} /> and
+            <TechLink label="OpenStack" tag="openstack" tags={tags} />,
             with a track record of building regulatory-compliant solutions
             aligned with HIPAA, PCI DSS, COPPA, and GDPR. Along the way I've cut
             cloud costs by up to 60%, delivered production platforms for 500K+
@@ -62,14 +62,14 @@ const tags = new Set(await getTags());
                 <strong>Common Wallet Platform (Fintech)</strong> — Architected a
                 white-label digital wallet for US banks, similar to Apple Pay.
                 Built end-to-end encrypted payment infrastructure with
-                <a href="https://aws.amazon.com/kms/" target="_blank" rel="noopener">AWS KMS</a>
-                + <a href="https://aws.amazon.com/ec2/nitro/nitro-enclaves/" target="_blank" rel="noopener">Nitro Enclaves</a>,
+                <TechLink label="AWS KMS" tag="aws" tags={tags} />
+                + <TechLink label="Nitro Enclaves" tags={tags} />,
                 delivered a multi-tenant system for 10+ banks and 500K+ end-users,
                 ensured PCI DSS and GDPR compliance, and cut fraud incidents by 25%.
               </li>
               <li>
                 <strong>Bolt.SH (Cloud IaaS)</strong> — Designed an
-                <a href="https://www.openstack.org" target="_blank" rel="noopener">OpenStack</a>-powered
+                <TechLink label="OpenStack" tag="openstack" tags={tags} />-powered
                 IaaS platform with VM orchestration, virtual networking, and load
                 balancing. Reduced external data-center costs by 60% and hardened
                 infrastructure with compliance-aligned access controls and audit
@@ -90,12 +90,12 @@ const tags = new Set(await getTags());
               <li>
                 <strong>COPPA-Compliant Social App</strong> — Developed a
                 child-safety-compliant social platform backend in
-                <a href="https://nodejs.org" target="_blank" rel="noopener">Node.js</a>,
-                <a href="https://graphql.org" target="_blank" rel="noopener">GraphQL</a>, and
-                <a href="https://aws.amazon.com" target="_blank" rel="noopener">AWS</a>,
+                <TechLink label="Node.js" tag="nodejs" tags={tags} />,
+                <TechLink label="GraphQL" tags={tags} />, and
+                <TechLink label="AWS" tag="aws" tags={tags} />,
                 with data anonymization and parental-consent workflows.
               </li>
-              <li>Mentored 10+ engineers and drove adoption of trunk-based development with <a href="https://docs.gitlab.com/ee/ci/" target="_blank" rel="noopener">GitLab CI</a>.</li>
+              <li>Mentored 10+ engineers and drove adoption of trunk-based development with <TechLink label="GitLab CI" tag="ci-cd" tags={tags} />.</li>
             </ul>
           </div>
         </section>

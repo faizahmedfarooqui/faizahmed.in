@@ -4,7 +4,7 @@ datePublished: Wed Mar 19 2025 12:30:23 GMT+0000 (Coordinated Universal Time)
 cuid: cm8fwhgob001a09l762tm3h3w
 slug: aes-vs-rsa-encryption
 cover: ./cover.jpg
-tags: aes, aes-encryption, rsa, rsa-encryption
+tags: aes-encryption, rsa
 series: encryption
 
 ---

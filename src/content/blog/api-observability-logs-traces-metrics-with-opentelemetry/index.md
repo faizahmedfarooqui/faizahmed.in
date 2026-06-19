@@ -4,7 +4,7 @@ datePublished: Tue Jul 15 2025 11:30:42 GMT+0000 (Coordinated Universal Time)
 cuid: cmd4gb87c000002l2g1ii9mcd
 slug: api-observability-logs-traces-metrics-with-opentelemetry
 cover: ./cover.jpg
-tags: nodejs, opentelemetry, observability, apis, backend-development, microservices, devops, jaeger, prometheus, grafana, software-engineering, distributed-systems, monitoring, logging, tracing
+tags: nodejs, opentelemetry, observability, apis, backend-engineering, microservices, devops, jaeger, prometheus, grafana, software-engineering, distributed-systems, monitoring, logging, tracing
 series: scaling-javascript-nodejs
 
 ---

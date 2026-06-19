@@ -4,7 +4,7 @@ datePublished: Mon Sep 25 2023 09:05:28 GMT+0000 (Coordinated Universal Time)
 cuid: clmyny2s1000t09mh7907dair
 slug: tuntap-devices-using-open-vswitch
 cover: ./cover.jpg
-tags: ovs, openvswitch, networking, tuntap
+tags: openvswitch, networking, tuntap
 series: vcw
 
 ---

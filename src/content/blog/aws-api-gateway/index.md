@@ -4,7 +4,7 @@ datePublished: Wed Jul 02 2025 11:30:30 GMT+0000 (Coordinated Universal Time)
 cuid: cmclvkvs5001y02lee5gbh2ql
 slug: aws-api-gateway
 cover: ./cover.jpg
-tags: vpc-link, aws, api-gateway, serverless, devops, lambda, scalablesolutions, cloud-architecture
+tags: vpc-link, aws, api-gateway, serverless, devops, lambda, scalability, cloud-architecture
 series: null
 
 ---

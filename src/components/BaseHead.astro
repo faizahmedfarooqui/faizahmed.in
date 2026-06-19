@@ -13,6 +13,8 @@ interface Props {
   jsonLd?: object | object[];
   // Optional topic-specific feed for autodiscovery (in addition to the main one).
   feed?: { title: string; href: string };
+  // Keep the page out of search indexes (still followed). Used for thin tag pages.
+  noindex?: boolean;
 }
 
 const {
@@ -24,6 +26,7 @@ const {
   publishedTime,
   jsonLd,
   feed,
+  noindex,
 } = Astro.props;
 
 // Escape "<" so a "</script>" inside any string can't break out of the tag.
@@ -45,6 +48,7 @@ const ogImage = image ?? new URL("/og-default.png", CANONICAL_ORIGIN).href;
 
 <title>{pageTitle}</title>
 <meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex,follow" />}
 <link rel="canonical" href={canonical} />
 
 <meta property="og:type" content={type} />

@@ -4,7 +4,7 @@ datePublished: Tue Aug 05 2025 08:07:20 GMT+0000 (Coordinated Universal Time)
 cuid: cmdy9al3j000302jig532floh
 slug: secrets-sprawl-in-nodejs-projects-detection-prevention-and-secure-deployment-2025
 cover: ./cover.jpg
-tags: nodejs, secrets-management, gitguardian, devsecops, ci-cd, backend-engineering, cloud-security, software-engineering, securitybestpractices
+tags: nodejs, secrets-management, gitguardian, devsecops, ci-cd, backend-engineering, cloud-security, software-engineering, security
 series: scaling-javascript-nodejs
 
 ---

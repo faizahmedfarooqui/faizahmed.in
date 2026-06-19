@@ -4,7 +4,7 @@ datePublished: Wed Apr 23 2025 11:12:37 GMT+0000 (Coordinated Universal Time)
 cuid: cm9tu493d000008l2aj6bhbzw
 slug: killing-your-app-with-map-heres-the-modern-fix
 cover: ./cover.jpg
-tags: arraymap, gc-pressure, javascript, nodejs, array, garbagecollection
+tags: arraymap, garbagecollection, javascript, nodejs, array
 series: scaling-javascript-nodejs
 
 ---

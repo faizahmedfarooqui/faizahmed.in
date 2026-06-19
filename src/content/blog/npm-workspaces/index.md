@@ -4,7 +4,7 @@ datePublished: Wed May 03 2023 10:37:27 GMT+0000 (Coordinated Universal Time)
 cuid: clh7kdula000909mh3lndc7jw
 slug: npm-workspaces
 cover: ./cover.jpg
-tags: npm, workspaces, monorepo, npm-workspaces, shared-components
+tags: npm, npm-workspaces, monorepo, shared-components
 series: scaling-javascript-nodejs
 
 ---

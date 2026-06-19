@@ -20,6 +20,7 @@ interface Props {
   publishedTime?: Date;
   jsonLd?: object | object[];
   feed?: { title: string; href: string };
+  noindex?: boolean;
 }
 const props = Astro.props;
 ---

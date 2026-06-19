@@ -4,7 +4,7 @@ datePublished: Wed Jul 09 2025 11:30:22 GMT+0000 (Coordinated Universal Time)
 cuid: cmcvvnos8001h02lh4cm21ltw
 slug: packaging-nodejs-libraries-in-2025
 cover: ./cover.jpg
-tags: nodejs, npm, javascript, esm, commonjs, typescript, rollup, tsup, opensource, devtools, backend-development, webdev, npm-packages
+tags: nodejs, npm, javascript, esm, commonjs, typescript, rollup, tsup, opensource, devtools, backend-engineering, web-development
 series: scaling-javascript-nodejs
 
 ---

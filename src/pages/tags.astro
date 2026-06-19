@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getPosts } from "../lib/posts";
+
+const posts = await getPosts();
+const counts = new Map<string, number>();
+for (const p of posts) for (const t of p.data.tags) counts.set(t, (counts.get(t) ?? 0) + 1);
+
+// Most-used first, then alphabetical. Bigger tags render larger (tag cloud).
+const tags = [...counts.entries()].sort(
+  (a, b) => b[1] - a[1] || a[0].localeCompare(b[0]),
+);
+const max = tags.length ? tags[0][1] : 1;
+// Map a count to a font size between 0.85rem and 1.5rem.
+const sizeOf = (n: number) => (0.85 + (n / max) * 0.65).toFixed(2);
+---
+<BaseLayout
+  title="Tags"
+  description="Browse all topics on faizahmed.in by tag."
+  canonicalPath="/tags"
+>
+  <h1 class="page-title">Tags</h1>
+  <p class="count">{tags.length} tags across {posts.length} posts</p>
+
+  <div class="cloud">
+    {tags.map(([tag, n]) => (
+      <a href={`/tag/${tag}`} style={`font-size:${sizeOf(n)}rem`}>
+        #{tag}<span class="n">{n}</span>
+      </a>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .page-title { margin: 2.2rem 0 0.2rem; }
+  .count { color: var(--text-faint); margin: 0 0 1.5rem; font-size: 0.9rem; }
+  .cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    align-items: baseline;
+    line-height: 1.6;
+  }
+  .cloud a { color: var(--text-soft); white-space: nowrap; }
+  .cloud a:hover { color: var(--accent); text-decoration: none; }
+  .n {
+    font-size: 0.7em;
+    color: var(--text-faint);
+    margin-left: 3px;
+    vertical-align: super;
+  }
+</style>

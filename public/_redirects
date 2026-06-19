@@ -1,0 +1,27 @@
+# 301s for tag slugs merged during consolidation (old -> canonical).
+# Cloudflare Pages applies these; keep in sync with MERGE in scripts/consolidate-tags.mjs.
+/tag/cicd                  /tag/ci-cd                301
+/tag/pcidss                /tag/pci-dss              301
+/tag/webdev                /tag/web-development      301
+/tag/backendengineering    /tag/backend-engineering  301
+/tag/backend-development   /tag/backend-engineering  301
+/tag/devtip                /tag/devtips              301
+/tag/ovs                   /tag/openvswitch          301
+/tag/e2ee                  /tag/end-to-end-encryption 301
+/tag/aes                   /tag/aes-encryption       301
+/tag/rsa-encryption        /tag/rsa                  301
+/tag/tls-encryption        /tag/tls                  301
+/tag/backpressure-in-nodejs /tag/backpressure        301
+/tag/streams-backpressure  /tag/backpressure         301
+/tag/streamingdata         /tag/streaming            301
+/tag/streamingtech         /tag/streaming            301
+/tag/streams-in-nodejs     /tag/streams              301
+/tag/scalablearchitecture  /tag/scalability          301
+/tag/scalablesolutions     /tag/scalability          301
+/tag/gc-pressure           /tag/garbagecollection    301
+/tag/npm-packages          /tag/npm                  301
+/tag/workspaces            /tag/npm-workspaces        301
+/tag/devsecurity           /tag/devsecops            301
+/tag/securitybestpractices /tag/security             301
+/tag/software-development  /tag/software-engineering 301
+/tag/queue                 /tag/queue-systems        301

@@ -4,7 +4,7 @@ datePublished: Mon May 12 2025 10:30:31 GMT+0000 (Coordinated Universal Time)
 cuid: cmakxzami000309l50y27dvfp
 slug: understanding-mse-and-eme
 cover: ./cover.jpg
-tags: media-source-extension, encrypted-media-extension, mediasourceextensions, encryptedmediaextensions, streaming, web-development, streamingtech, video-streaming
+tags: media-source-extension, encrypted-media-extension, mediasourceextensions, encryptedmediaextensions, streaming, web-development, video-streaming
 series: null
 
 ---
