@@ -140,7 +140,9 @@ const seriesList = [...counts.entries()]
   @media (max-width: 640px) {
     /* Two rows: brand + action buttons on top, nav links on their own row below.
        This avoids the buttons wrapping to a second line with a big empty gap. */
-    .bar { flex-wrap: wrap; height: auto; padding: 10px 0; row-gap: 10px; column-gap: 12px; }
+    /* padding-block only — leave the .wrap left/right gutter intact (using
+       `padding: 10px 0` here would zero out the horizontal padding). */
+    .bar { flex-wrap: wrap; height: auto; padding-block: 10px; row-gap: 10px; column-gap: 12px; }
     .brand { order: 1; font-size: 1rem; }
     .actions { order: 2; }
     .nav-group { order: 3; flex-basis: 100%; gap: 20px; }

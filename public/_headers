@@ -1,7 +1,8 @@
 # Security response headers for all routes (applied by Cloudflare Pages).
 # CSP is tuned to exactly what the site loads:
 #   - inline scripts/styles (Astro inline <script>, Shiki inline colors) -> 'unsafe-inline'
-#   - Umami Cloud analytics (cookieless) -> cloud.umami.is (script), gateway.umami.is (beacon /api/send)
+#   - Umami analytics (cookieless) is proxied first-party via /u (see functions/u),
+#     so it needs no extra CSP hosts — the browser only talks to 'self'.
 #   - Mermaid runtime (diagram pages)  -> cdn.jsdelivr.net + 'unsafe-eval' (mermaid renders via Function/eval)
 #   - click-to-load YouTube facade     -> i.ytimg.com (thumb) + youtube-nocookie.com (iframe)
 # Everything else defaults to 'self'. HSTS has no `preload` (kept reversible).
@@ -12,7 +13,7 @@
   X-Frame-Options: DENY
   Permissions-Policy: camera=(), microphone=(), geolocation=(), browsing-topics=()
   Cross-Origin-Opener-Policy: same-origin
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cloud.umami.is https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://i.ytimg.com; font-src 'self'; connect-src 'self' https://gateway.umami.is; frame-src https://www.youtube-nocookie.com; worker-src 'self' blob:; manifest-src 'self'
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://i.ytimg.com; font-src 'self'; connect-src 'self'; frame-src https://www.youtube-nocookie.com; worker-src 'self' blob:; manifest-src 'self'
 
 # Never let the kill-switch service worker get cached, so browsers always
 # re-fetch it and run the unregister logic.
