@@ -34,9 +34,7 @@ const seriesList = [...counts.entries()]
     <a class="nav-link" href="/about">About</a>
 
     <div class="series-dd">
-      <button id="series-trigger" class="nav-link" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="series-menu">
-        Series <span aria-hidden="true">▾</span>
-      </button>
+      <button id="series-trigger" class="nav-link" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="series-menu">Series <span aria-hidden="true">▾</span></button>
       <div id="series-menu" class="series-menu" role="menu" hidden>
         {seriesList.map((s) => (
           <a href={`/series/${s.slug}`} role="menuitem">
