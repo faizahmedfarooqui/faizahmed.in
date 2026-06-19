@@ -31,6 +31,7 @@ const seriesList = [...counts.entries()]
       <span>{SITE_TITLE}</span>
     </a>
 
+    <nav class="nav-group" aria-label="Primary">
     <a class="nav-link" href="/about">About</a>
 
     <div class="series-dd">
@@ -46,6 +47,7 @@ const seriesList = [...counts.entries()]
     </div>
 
     <a class="nav-link" href="/tags">Tags</a>
+    </nav>
 
     <div class="actions">
       <button id="search-open" type="button" aria-label="Search (Ctrl/Cmd + K)">⌘K</button>
@@ -77,6 +79,7 @@ const seriesList = [...counts.entries()]
     white-space: nowrap;
   }
   .brand:hover { text-decoration: none; }
+  .nav-group { display: flex; align-items: center; gap: 16px; }
   .nav-link {
     color: var(--text-soft);
     font-size: 0.9rem;
@@ -135,8 +138,12 @@ const seriesList = [...counts.entries()]
   }
   #search-open:hover { color: var(--text); }
   @media (max-width: 640px) {
-    .bar { flex-wrap: wrap; height: auto; padding: 9px 0; row-gap: 8px; gap: 14px; }
-    .brand { font-size: 1rem; }
+    /* Two rows: brand + action buttons on top, nav links on their own row below.
+       This avoids the buttons wrapping to a second line with a big empty gap. */
+    .bar { flex-wrap: wrap; height: auto; padding: 10px 0; row-gap: 10px; column-gap: 12px; }
+    .brand { order: 1; font-size: 1rem; }
+    .actions { order: 2; }
+    .nav-group { order: 3; flex-basis: 100%; gap: 20px; }
     /* Anchor the menu to the header (full width with side gutters) rather than the
        Series button — otherwise it overflows the viewport depending on where the
        button lands in the wrapped header. Single column, scroll vertically. */

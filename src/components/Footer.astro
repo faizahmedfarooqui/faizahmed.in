@@ -33,6 +33,9 @@ const year = new Date().getFullYear();
     gap: 12px;
     flex-wrap: wrap;
   }
-  .site-footer nav { display: flex; gap: 16px; }
+  .site-footer nav { display: flex; flex-wrap: wrap; gap: 10px 16px; }
   .site-footer a { color: var(--text-soft); }
+  @media (max-width: 640px) {
+    .site-footer .wrap { flex-direction: column; align-items: flex-start; }
+  }
 </style>
