@@ -27,6 +27,15 @@ const props = Astro.props;
 <html lang="en">
   <head>
     <BaseHead {...props} />
+    {/* Umami Cloud — cookieless analytics, production only (no localhost noise). */}
+    {import.meta.env.PROD && (
+      <script
+        is:inline
+        defer
+        src="https://cloud.umami.is/script.js"
+        data-website-id="c7d523fd-446c-4fa9-af93-7c096a4310fb"
+      ></script>
+    )}
   </head>
   <body>
     <a href="#main-content" class="skip-link">Skip to content</a>
