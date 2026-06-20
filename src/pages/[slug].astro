@@ -299,6 +299,9 @@ const breadcrumb = {
 </style>
 
 <script>
+  // Runs on initial load AND after each View-Transitions navigation, since the
+  // post content (code blocks, TOC) gets swapped. Guards keep re-runs idempotent.
+  document.addEventListener("astro:page-load", () => {
   // Enhance code blocks with a terminal-style header (language + copy button).
   document.querySelectorAll<HTMLPreElement>("pre.astro-code").forEach((pre) => {
     if (pre.closest(".code-block")) return;
@@ -356,4 +359,5 @@ const breadcrumb = {
     );
     seen.forEach((h) => observer.observe(h));
   }
+  });
 </script>
