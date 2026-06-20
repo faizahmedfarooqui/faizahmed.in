@@ -115,6 +115,38 @@ const props = Astro.props;
         }
       });
     </script>
+
+    <script>
+      // Track every link click as a Umami custom event (internal vs external,
+      // plus mailto/tel). Document-delegated + bound once, so it survives
+      // View-Transitions navigation. No-op when Umami isn't loaded (e.g. dev).
+      document.addEventListener("click", (e) => {
+        const a = (e.target as HTMLElement)?.closest?.("a[href]") as HTMLAnchorElement | null;
+        const umami = (window as any).umami;
+        if (!a || !umami) return;
+        const raw = a.getAttribute("href") || "";
+        if (!raw || raw.startsWith("#")) return;
+
+        let name = "internal-link";
+        let url = raw;
+        if (raw.startsWith("mailto:")) name = "email-link";
+        else if (raw.startsWith("tel:")) name = "tel-link";
+        else {
+          try {
+            const u = new URL(a.href);
+            url = a.href;
+            if (u.host !== location.host) name = "outbound-link";
+          } catch {
+            return;
+          }
+        }
+        umami.track(name, {
+          url,
+          text: (a.textContent || "").trim().slice(0, 80),
+          from: location.pathname,
+        });
+      });
+    </script>
   </body>
 </html>
 
