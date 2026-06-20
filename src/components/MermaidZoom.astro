@@ -1,0 +1,157 @@
+---
+// Click any rendered Mermaid diagram to open it full-screen with pan + zoom.
+// Uses event delegation on document (survives View-Transitions navigations) and
+// looks the overlay up live by id, so it works without transition:persist.
+---
+<div id="mmz" class="mmz" hidden>
+  <div class="mmz-bar">
+    <button type="button" data-mmz="out" aria-label="Zoom out">−</button>
+    <button type="button" data-mmz="reset" aria-label="Reset zoom">⤢</button>
+    <button type="button" data-mmz="in" aria-label="Zoom in">+</button>
+    <button type="button" data-mmz="close" aria-label="Close">✕</button>
+  </div>
+  <div id="mmz-stage" class="mmz-stage"></div>
+</div>
+
+<script>
+  let scale = 1, tx = 0, ty = 0;
+  let dragging = false, lastX = 0, lastY = 0;
+
+  const $ = (id: string) => document.getElementById(id);
+  const inner = () => $("mmz-stage")?.firstElementChild as HTMLElement | null;
+  const clamp = (n: number) => Math.min(8, Math.max(0.2, n));
+
+  function apply() {
+    const el = inner();
+    if (el) el.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+  }
+
+  function open(pre: HTMLElement) {
+    const svg = pre.querySelector("svg");
+    const stage = $("mmz-stage");
+    const overlay = $("mmz");
+    if (!svg || !stage || !overlay) return;
+    const clone = svg.cloneNode(true) as SVGSVGElement;
+    const vb = clone.viewBox?.baseVal;
+    clone.style.maxWidth = "none";
+    if (vb && vb.width) {
+      clone.style.width = vb.width + "px";
+      clone.style.height = "auto";
+      clone.removeAttribute("height");
+    }
+    const wrap = document.createElement("div");
+    wrap.className = "mmz-inner";
+    wrap.appendChild(clone);
+    stage.innerHTML = "";
+    stage.appendChild(wrap);
+    scale = 1; tx = 0; ty = 0; apply();
+    overlay.hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+
+  function close() {
+    const overlay = $("mmz");
+    const stage = $("mmz-stage");
+    if (overlay) overlay.hidden = true;
+    if (stage) stage.innerHTML = "";
+    document.body.style.overflow = "";
+  }
+
+  function zoomAt(factor: number, cx: number, cy: number) {
+    const stage = $("mmz-stage");
+    if (!stage) return;
+    const r = stage.getBoundingClientRect();
+    const px = cx - r.left - r.width / 2;
+    const py = cy - r.top - r.height / 2;
+    const next = clamp(scale * factor);
+    const f = next / scale;
+    tx = px - (px - tx) * f;
+    ty = py - (py - ty) * f;
+    scale = next;
+    apply();
+  }
+
+  // Open when a rendered diagram is clicked (delegated; survives navigation).
+  document.addEventListener("click", (e) => {
+    const t = e.target as HTMLElement;
+    const btn = t.closest<HTMLElement>("[data-mmz]");
+    if (btn) {
+      const a = btn.dataset.mmz;
+      const c = window.innerWidth / 2, m = window.innerHeight / 2;
+      if (a === "in") zoomAt(1.25, c, m);
+      else if (a === "out") zoomAt(0.8, c, m);
+      else if (a === "reset") { scale = 1; tx = 0; ty = 0; apply(); }
+      else if (a === "close") close();
+      return;
+    }
+    if (!$("mmz")?.hidden) return; // overlay open: ignore other clicks
+    const pre = t.closest<HTMLElement>("pre.mermaid");
+    if (pre && pre.querySelector("svg")) open(pre);
+  });
+
+  // Backdrop click closes (clicks land on the stage, not the diagram).
+  $("mmz-stage")?.addEventListener("click", () => {});
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !$("mmz")?.hidden) close();
+  });
+
+  // Wheel / trackpad-pinch to zoom; drag to pan. Bound once on document and
+  // gated to when the overlay is open.
+  document.addEventListener("wheel", (e) => {
+    if ($("mmz")?.hidden) return;
+    if (!(e.target as HTMLElement).closest("#mmz-stage")) return;
+    e.preventDefault();
+    zoomAt(e.deltaY < 0 ? 1.1 : 0.9, e.clientX, e.clientY);
+  }, { passive: false });
+
+  document.addEventListener("pointerdown", (e) => {
+    if ($("mmz")?.hidden) return;
+    if (!(e.target as HTMLElement).closest("#mmz-stage")) return;
+    dragging = true; lastX = e.clientX; lastY = e.clientY;
+  });
+  document.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    tx += e.clientX - lastX; ty += e.clientY - lastY;
+    lastX = e.clientX; lastY = e.clientY;
+    apply();
+  });
+  document.addEventListener("pointerup", () => { dragging = false; });
+</script>
+
+<style>
+  :global(pre.mermaid) { cursor: zoom-in; }
+  .mmz {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    display: flex;
+    flex-direction: column;
+    background: color-mix(in srgb, var(--bg) 94%, transparent);
+    backdrop-filter: blur(2px);
+  }
+  .mmz[hidden] { display: none; }
+  .mmz-bar { display: flex; gap: 8px; justify-content: flex-end; padding: 12px; }
+  .mmz-bar button {
+    width: 38px; height: 38px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    font-family: var(--font);
+  }
+  .mmz-bar button:hover { border-color: var(--accent); color: var(--accent); }
+  .mmz-stage {
+    flex: 1;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    touch-action: none;
+    cursor: grab;
+  }
+  .mmz-stage:active { cursor: grabbing; }
+  .mmz-inner { transform-origin: center center; will-change: transform; }
+  .mmz-inner svg { max-width: none !important; height: auto; }
+</style>
