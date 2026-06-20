@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PostCard from "../components/PostCard.astro";
-import { getPosts } from "../lib/posts";
+import { getPosts, postSlug, readMinutes, formatDate, excerpt } from "../lib/posts";
+import { SERIES } from "../consts";
 
 const posts = await getPosts();
 const byYear = new Map<number, typeof posts>();
@@ -11,40 +11,107 @@ for (const p of posts) {
   byYear.get(y)!.push(p);
 }
 const years = [...byYear.keys()].sort((a, b) => b - a);
+
+const seriesTitle = (slug: string) =>
+  SERIES.find((s) => s.slug === slug)?.title ??
+  slug.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+
+// Kicker = series name if any, else the first tag.
+const kickerOf = (p: (typeof posts)[number]) =>
+  p.data.series ? seriesTitle(p.data.series) : (p.data.tags[0] ?? "");
 ---
-<BaseLayout title="Archive" description="Every post, by year." canonicalPath="/archive">
+<BaseLayout title="Articles" description="The complete index — every article, by year." canonicalPath="/archive">
   <header class="arch-head">
-    <h1>Archive</h1>
-    <p class="count">{posts.length} posts</p>
+    <p class="arch-kicker">The complete index</p>
+    <h1>Articles</h1>
+    <p class="arch-sub">{posts.length} posts · {years.length} years</p>
   </header>
 
   {years.map((year) => (
-    <section class="arch-year">
-      <h2 class="year-label">
+    <section class="np-year">
+      <h2 class="np-yearlabel">
         <span>{year}</span>
-        <span class="year-n">{byYear.get(year)!.length}</span>
+        <span class="np-yearn">{byYear.get(year)!.length} posts</span>
       </h2>
-      <div class="feed">
-        {byYear.get(year)!.map((post) => <PostCard post={post} />)}
+      <div class="np-cols">
+        {byYear.get(year)!.map((post) => (
+          <article class="np-entry">
+            {kickerOf(post) && <span class="np-kick">{kickerOf(post)}</span>}
+            <h3 class="np-hl"><a href={`/${postSlug(post)}`}>{post.data.title}</a></h3>
+            <p class="np-dek">{excerpt(post.body ?? "", 120)}</p>
+            <p class="np-meta">
+              {formatDate(post.data.datePublished)} · {readMinutes(post.body ?? "")} min
+            </p>
+          </article>
+        ))}
       </div>
     </section>
   ))}
 </BaseLayout>
 
 <style>
-  .arch-head { margin: 2.2rem 0 0.5rem; }
-  .arch-head h1 { margin: 0; }
-  .arch-head .count { color: var(--text-faint); margin: 0.3rem 0 0; font-size: 0.9rem; }
-  .arch-year { margin-top: 2.5rem; }
-  .year-label {
+  .arch-head {
+    text-align: center;
+    border-bottom: 1px solid var(--text);
+    padding: 2rem 0 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .arch-kicker {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    color: var(--text-faint);
+    margin: 0;
+  }
+  .arch-head h1 { font-size: 2.4rem; margin: 0.25rem 0 0.1rem; }
+  .arch-sub { color: var(--text-faint); font-size: 0.85rem; margin: 0; }
+
+  .np-year { margin-top: 1.5rem; }
+  .np-yearlabel {
     display: flex;
     align-items: baseline;
-    gap: 10px;
-    font-size: 1.15rem;
-    color: var(--text-faint);
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 0.4rem;
-    margin-bottom: 1.3rem;
+    font-size: 1.6rem;
+    border-bottom: 3px double var(--text);
+    padding-bottom: 0.3rem;
+    margin: 2.2rem 0 1.1rem;
   }
-  .year-n { font-size: 0.8rem; }
+  .np-yearn { margin-left: auto; font-size: 0.78rem; color: var(--text-faint); }
+
+  /* Newspaper column flow with vertical rules; entries never split a column. */
+  .np-cols {
+    columns: 3 260px;
+    column-gap: 30px;
+    column-rule: 1px solid var(--border);
+  }
+  .np-entry {
+    position: relative;
+    break-inside: avoid;
+    padding: 12px 0;
+    border-top: 1px solid var(--border);
+  }
+  .np-entry:first-child { border-top: none; padding-top: 0; }
+  .np-kick {
+    display: block;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .np-hl { margin: 0 0 3px; font-size: 1rem; line-height: 1.25; font-weight: 700; }
+  .np-hl a { color: var(--text); }
+  .np-hl a::after { content: ""; position: absolute; inset: 0; }
+  .np-entry:hover .np-hl a { color: var(--accent); }
+  .np-dek {
+    margin: 0 0 3px;
+    color: var(--text-soft);
+    font-size: 0.82rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .np-meta { margin: 0; color: var(--text-faint); font-size: 0.74rem; }
 </style>

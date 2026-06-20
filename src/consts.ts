@@ -246,6 +246,12 @@ export const FEATURED_REPOS = [
     fallbackStars: 1261,
     fallbackForks: 325,
   },
+  {
+    repo: "faizahmedfarooqui/nodejs",
+    blurb: "A low-level Node.js web, API, and CLI app built entirely on Node's core APIs — zero npm packages.",
+    fallbackStars: 21,
+    fallbackForks: 1,
+  },
 ];
 
 // Roles, newest first. `current: true` marks the present position.

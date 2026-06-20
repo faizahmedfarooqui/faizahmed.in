@@ -17,7 +17,9 @@ const forks = repo.forks.toLocaleString("en-US");
 
 <style>
   .repo-card {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 1rem 1.2rem;
@@ -27,6 +29,7 @@ const forks = repo.forks.toLocaleString("en-US");
   .repo-card:hover { border-color: var(--accent); text-decoration: none; }
   .repo-name { display: block; font-weight: 700; color: var(--accent); }
   .repo-blurb { display: block; color: var(--text-soft); font-size: 0.92rem; margin: 6px 0 12px; }
-  .repo-stats { display: flex; gap: 16px; align-items: center; color: var(--text-faint); font-size: 0.85rem; }
+  /* Pin stats to the bottom so the row aligns across cards of differing blurb length. */
+  .repo-stats { display: flex; gap: 16px; align-items: center; color: var(--text-faint); font-size: 0.85rem; margin-top: auto; }
   .repo-go { margin-left: auto; color: var(--text-soft); }
 </style>
