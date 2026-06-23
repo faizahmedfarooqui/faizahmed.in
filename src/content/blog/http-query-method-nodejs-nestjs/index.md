@@ -361,3 +361,16 @@ day one.
 It is not a reason to rewrite every endpoint. GET by URL is still right for simple reads.
 But for the complex read, the decade-long GET-versus-POST compromise finally has a clean
 answer.
+
+## References
+
+Everything above was checked against primary sources, and the Node.js behaviour was
+confirmed by running a real QUERY request, not taken on faith from a generated draft.
+
+- [RFC 10008: The HTTP QUERY Method](https://www.rfc-editor.org/rfc/rfc10008.html), and its [summary page](https://www.rfc-editor.org/info/rfc10008/) at the RFC Editor
+- [RFC 10008 on the IETF datatracker](https://datatracker.ietf.org/doc/rfc10008/)
+- [Node.js issue #51562: Support for the QUERY method](https://github.com/nodejs/node/issues/51562)
+- [Node.js 21.7.2 release notes](https://nodejs.org/en/blog/release/v21.7.2)
+- [Express issue #5615: Support HTTP QUERY method](https://github.com/expressjs/express/issues/5615)
+- [Fetch Standard: forbidden methods](https://fetch.spec.whatwg.org/)
+- [MDN: Cross-Origin Resource Sharing (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS)
