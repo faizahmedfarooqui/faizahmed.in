@@ -204,6 +204,11 @@ pre.mermaid {
 table { width: 100%; border-collapse: collapse; margin: 1.2rem 0; font-size: 0.95rem; }
 th, td { border: 1px solid var(--border); padding: 0.5rem 0.7rem; text-align: left; }
 th { background: var(--bg-soft); }
+/* Drop the outer frame; keep the internal cell separators. */
+thead th { border-top: none; }
+tbody tr:last-child td { border-bottom: none; }
+th:first-child, td:first-child { border-left: none; }
+th:last-child, td:last-child { border-right: none; }
 
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;

@@ -198,9 +198,14 @@ export const NOW = {
 // value used on posts. Add/remove as the content process labels series.
 export const SERIES = [
   {
+    title: "AI Engineering",
+    slug: "ai-engineering",
+    description: "Using AI like an engineer: threat models, secure workflows, and meta-prompting for real production work.",
+  },
+  {
     title: "Mastering Encryption",
     slug: "encryption",
-    description: "Practical cryptography for engineers — AWS KMS, Nitro Enclaves, and keeping secrets safe in production.",
+    description: "Practical cryptography for engineers: AWS KMS, Nitro Enclaves, and keeping secrets safe in production.",
   },
   {
     title: "Metal to Cloud",
@@ -210,7 +215,7 @@ export const SERIES = [
   {
     title: "Scaling JavaScript & Node.js",
     slug: "scaling-javascript-nodejs",
-    description: "Patterns for scaling Node.js — queues, backpressure, idempotency, and production reliability.",
+    description: "Patterns for scaling Node.js: queues, backpressure, idempotency, and production reliability.",
   },
   {
     title: "Virtualization & MicroVMs",
@@ -242,13 +247,13 @@ export const SERIES = [
 export const FEATURED_REPOS = [
   {
     repo: "GeekyAnts/express-typescript",
-    blurb: "Production-ready Express + TypeScript boilerplate — my most widely adopted open-source project, used across 20+ production apps.",
+    blurb: "Production-ready Express + TypeScript boilerplate. My most widely adopted open-source project, used across 20+ production apps.",
     fallbackStars: 1261,
     fallbackForks: 325,
   },
   {
     repo: "faizahmedfarooqui/nodejs",
-    blurb: "A low-level Node.js web, API, and CLI app built entirely on Node's core APIs — zero npm packages.",
+    blurb: "A low-level Node.js web, API, and CLI app built entirely on Node's core APIs, with zero npm packages.",
     fallbackStars: 21,
     fallbackForks: 1,
   },
@@ -277,7 +282,7 @@ export const EXPERIENCE = [
 export const BOLT_VIDEOS = [
   { id: "IUEw5PV4VBs", episode: 2, title: "Autoprovision of Servers" },
   { id: "ncRzMFRln-8", episode: 5, title: "Leveraging Zabbix" },
-  { id: "3gAv2ZLio_s", episode: 6, title: "Juju — Orchestration Tool" },
+  { id: "3gAv2ZLio_s", episode: 6, title: "Juju: Orchestration Tool" },
   { id: "cqx1li4xfa4", episode: 7, title: "OpenStack Management" },
   { id: "30vwm5Q3qq8", episode: 8, title: "Infrastructure Components of OpenStack & its Dashboard" },
   { id: "aoMzxKveFP4", episode: 9, title: "Juju Dashboard & Juju Controller" },

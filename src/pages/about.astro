@@ -49,17 +49,17 @@ const tags = new Set(await getTags());
           <h2>Experience</h2>
 
           <div class="role">
-            <h3>Talendy Holdings — Lead Software Engineer</h3>
+            <h3>Talendy Holdings: Lead Software Engineer</h3>
             <p class="when">Bengaluru · June 2026 – Present</p>
             <p>Technical leadership and strategy, development and quality, modelling and process.</p>
           </div>
 
           <div class="role">
-            <h3>GeekyAnts — Principal Engineer / Architect</h3>
+            <h3>GeekyAnts: Principal Engineer / Architect</h3>
             <p class="when">Bengaluru · September 2015 – May 2026</p>
             <ul>
               <li>
-                <strong>Common Wallet Platform (Fintech)</strong> — Architected a
+                <strong>Common Wallet Platform (Fintech)</strong>: Architected a
                 white-label digital wallet for US banks, similar to Apple Pay.
                 Built end-to-end encrypted payment infrastructure with
                 <TechLink label="AWS KMS" tag="aws" tags={tags} />
@@ -68,7 +68,7 @@ const tags = new Set(await getTags());
                 ensured PCI DSS and GDPR compliance, and cut fraud incidents by 25%.
               </li>
               <li>
-                <strong>Bolt.SH (Cloud IaaS)</strong> — Designed an
+                <strong>Bolt.SH (Cloud IaaS)</strong>: Designed an
                 <TechLink label="OpenStack" tag="openstack" tags={tags} />-powered
                 IaaS platform with VM orchestration, virtual networking, and load
                 balancing. Reduced external data-center costs by 60% and hardened
@@ -76,19 +76,19 @@ const tags = new Set(await getTags());
                 logging. <a href="/bolt">Watch the series →</a>
               </li>
               <li>
-                <strong>GlueStack Framework</strong> — Built a full-stack monorepo
+                <strong>GlueStack Framework</strong>: Built a full-stack monorepo
                 framework that standardized architecture across 30+ client
                 projects, cut setup time by 40%, and shipped compliance-ready
                 boilerplates for auth, logging, and API security.
               </li>
               <li>
-                <strong>Healthcare Management System</strong> — Built a modular,
+                <strong>Healthcare Management System</strong>: Built a modular,
                 microservice-based HMS automating scheduling, billing, and
                 reporting; improved operational efficiency by 40% with
                 HIPAA-compliant PHI handling and audit trails.
               </li>
               <li>
-                <strong>COPPA-Compliant Social App</strong> — Developed a
+                <strong>COPPA-Compliant Social App</strong>: Developed a
                 child-safety-compliant social platform backend in
                 <TechLink label="Node.js" tag="nodejs" tags={tags} />,
                 <TechLink label="GraphQL" tags={tags} />, and
@@ -103,7 +103,7 @@ const tags = new Set(await getTags());
         <section>
           <h2>Education</h2>
           <p>
-            B.Tech, Computer Science Engineering — Dr. A. P. J. Abdul Kalam
+            B.Tech in Computer Science Engineering from Dr. A. P. J. Abdul Kalam
             Technical University, Lucknow, India (2011 – 2015).
           </p>
         </section>
@@ -115,7 +115,7 @@ const tags = new Set(await getTags());
           <ul class="comp">
             {COMPETENCIES.map((g) => (
               <li>
-                <strong>{g.group}</strong> —{" "}
+                <strong>{g.group}</strong>:{" "}
                 {g.items.map((it, i) => (
                   <Fragment>
                     {i > 0 ? ", " : ""}
@@ -133,8 +133,8 @@ const tags = new Set(await getTags());
             {repos.map((repo) => <RepoCard repo={repo} />)}
           </div>
           <ul>
-            <li><strong>GlueStack Framework</strong> — <a href="https://github.com/gluestack" target="_blank" rel="noopener">github.com/gluestack</a> · open-source monorepo framework powering 30+ client apps.</li>
-            <li><strong>Email2Webhook</strong> — <a href="https://email2webhook.com" target="_blank" rel="noopener">email2webhook.com</a> · SaaS tool converting emails into API JSON payloads.</li>
+            <li><strong>GlueStack Framework</strong>: <a href="https://github.com/gluestack" target="_blank" rel="noopener">github.com/gluestack</a> · open-source monorepo framework powering 30+ client apps.</li>
+            <li><strong>Email2Webhook</strong>: <a href="https://email2webhook.com" target="_blank" rel="noopener">email2webhook.com</a> · SaaS tool converting emails into API JSON payloads.</li>
           </ul>
         </section>
       </aside>
