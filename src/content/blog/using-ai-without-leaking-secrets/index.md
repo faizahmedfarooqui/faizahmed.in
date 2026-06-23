@@ -2,6 +2,7 @@
 title: "Using AI Without Leaking Your Secrets: A Threat Model for AI-Assisted Development"
 datePublished: 2026-06-23 10:00:00 GMT+0000 (Coordinated Universal Time)
 slug: using-ai-without-leaking-secrets
+cover: ./cover.jpg
 tags: ai, security, nodejs, aws, secrets
 series: ai-engineering
 ---
