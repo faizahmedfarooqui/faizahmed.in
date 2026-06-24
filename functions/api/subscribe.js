@@ -11,7 +11,9 @@
 // Optional:
 //   NEWSLETTER_FROM  defaults to "Faiz Ahmed Farooqui <newsletter@faizahmed.in>"
 //
-// The form is same-origin, so this stays within the site's CSP (connect-src 'self').
+// Only onRequestPost is exported: non-POST methods get an automatic 405 from the
+// Pages runtime, and every code path returns a Response so the function can never
+// fall through to a Cloudflare 502.
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -28,67 +30,66 @@ const esc = (s) =>
   );
 
 export async function onRequestPost({ request, env }) {
-  if (!env.RESEND_API_KEY) {
-    return json({ error: "Newsletter is not configured." }, 500);
-  }
-
-  let payload;
   try {
-    payload = await request.json();
-  } catch {
-    return json({ error: "Invalid request." }, 400);
-  }
+    if (!env.RESEND_API_KEY) {
+      return json({ error: "Newsletter is not configured." }, 500);
+    }
 
-  const email = String(payload?.email || "").trim().toLowerCase();
-  const name = String(payload?.name || "").trim().slice(0, 100);
+    let payload;
+    try {
+      payload = await request.json();
+    } catch {
+      return json({ error: "Invalid request." }, 400);
+    }
 
-  if (!EMAIL_RE.test(email)) {
-    return json({ error: "Please enter a valid email address." }, 400);
-  }
+    const email = String(payload?.email || "").trim().toLowerCase();
+    const name = String(payload?.name || "").trim().slice(0, 100);
 
-  const headers = {
-    Authorization: `Bearer ${env.RESEND_API_KEY}`,
-    "Content-Type": "application/json",
-  };
-  const from = env.NEWSLETTER_FROM || "Faiz Ahmed Farooqui <newsletter@faizahmed.in>";
+    if (!EMAIL_RE.test(email)) {
+      return json({ error: "Please enter a valid email address." }, 400);
+    }
 
-  // 1) Create the contact. A duplicate (already subscribed) is fine; treat the
-  //    common "already exists" statuses as success so re-subscribing is harmless.
-  const addRes = await fetch("https://api.resend.com/contacts", {
-    method: "POST",
-    headers,
-    body: JSON.stringify({
-      email,
-      first_name: name || undefined,
-      unsubscribed: false,
-    }),
-  });
+    const headers = {
+      Authorization: `Bearer ${env.RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    };
+    const from = env.NEWSLETTER_FROM || "Faiz Ahmed Farooqui <newsletter@faizahmed.in>";
 
-  if (!addRes.ok && addRes.status !== 409 && addRes.status !== 422) {
-    return json({ error: "Could not subscribe right now. Please try again." }, 502);
-  }
+    // 1) Create the contact. A duplicate (already subscribed) is fine; treat the
+    //    common "already exists" statuses as success so re-subscribing is harmless.
+    const addRes = await fetch("https://api.resend.com/contacts", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        email,
+        first_name: name || undefined,
+        unsubscribed: false,
+      }),
+    });
 
-  // 2) Send a welcome email. Best-effort: a failure here should not fail the
-  //    subscribe, since the contact is already saved.
-  await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers,
-    body: JSON.stringify({
-      from,
-      to: email,
-      subject: "You're subscribed to faizahmed.in",
-      html: `<p>Hi ${name ? esc(name) : "there"},</p>
+    if (!addRes.ok && addRes.status !== 409 && addRes.status !== 422) {
+      return json({ error: "Could not subscribe right now. Please try again." }, 502);
+    }
+
+    // 2) Send a welcome email. Best-effort: a failure here should not fail the
+    //    subscribe, since the contact is already saved.
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        from,
+        to: email,
+        subject: "You're subscribed to faizahmed.in",
+        html: `<p>Hi ${name ? esc(name) : "there"},</p>
 <p>Thanks for subscribing. You'll get an email when I publish a new post on
 <a href="https://faizahmed.in">faizahmed.in</a>, and nothing else.</p>
 <p>If this wasn't you, you can safely ignore this email.</p>`,
-    }),
-  }).catch(() => {});
+      }),
+    }).catch(() => {});
 
-  return json({ message: "You're subscribed. Check your inbox." });
-}
-
-// Reject non-POST methods cleanly.
-export async function onRequest({ request }) {
-  if (request.method === "POST") return; // handled by onRequestPost
-  return json({ error: "Method Not Allowed" }, 405);
+    return json({ message: "You're subscribed. Check your inbox." });
+  } catch {
+    // Never crash into a Cloudflare 502; return a readable error instead.
+    return json({ error: "Subscription failed unexpectedly. Please try again." }, 500);
+  }
 }
