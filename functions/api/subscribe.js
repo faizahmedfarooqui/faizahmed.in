@@ -68,7 +68,12 @@ export async function onRequestPost({ request, env }) {
     });
 
     if (!addRes.ok && addRes.status !== 409 && addRes.status !== 422) {
-      return json({ error: "Could not subscribe right now. Please try again." }, 502);
+      // Log Resend's exact response so the failure is visible in real-time logs.
+      // (Avoid status 502/504 here: Cloudflare's edge replaces those with its own
+      // error page, masking this JSON body.)
+      const detail = await addRes.text().catch(() => "");
+      console.log(`subscribe: resend /contacts -> ${addRes.status} ${detail}`.slice(0, 500));
+      return json({ error: "Could not subscribe right now. Please try again." }, 500);
     }
 
     // 2) Send a welcome email. Best-effort: a failure here should not fail the
