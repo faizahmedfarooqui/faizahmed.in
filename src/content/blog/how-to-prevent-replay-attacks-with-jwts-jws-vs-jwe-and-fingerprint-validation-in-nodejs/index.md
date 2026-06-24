@@ -5,7 +5,7 @@ cuid: cmbkubk3w000102ky7t5m7xbq
 slug: how-to-prevent-replay-attacks-with-jwts-jws-vs-jwe-and-fingerprint-validation-in-nodejs
 cover: ./cover.jpg
 tags: nodejs, jwt, security, authentication, backend, backend-engineering, websecurity, replay-attack, devtips, express
-series: null
+series: auth-and-identity
 
 ---
 

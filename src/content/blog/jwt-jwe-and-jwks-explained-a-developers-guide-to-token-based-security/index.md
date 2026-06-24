@@ -5,7 +5,7 @@ cuid: cm8rc0roh004m09i8hbcub226
 slug: jwt-jwe-and-jwks-explained-a-developers-guide-to-token-based-security
 cover: ./cover.jpg
 tags: jwt, jwe, jwks, token, security
-series: encryption
+series: auth-and-identity
 
 ---
 

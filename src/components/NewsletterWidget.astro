@@ -1,0 +1,200 @@
+---
+// Floating "Subscribe" widget shown on every page (mounted in BaseLayout).
+// A bottom-right circular button; click toggles a small panel that collects an
+// (optional) name + email and POSTs to the /api/subscribe Pages Function.
+// View-Transitions safe: element listeners (re)bind on astro:page-load against
+// fresh nodes; document-level listeners bind once (guarded on window).
+---
+
+<div id="nl-widget" class="nl-widget">
+  <button id="nl-toggle" class="nl-fab" type="button" aria-label="Subscribe to the newsletter" aria-expanded="false" aria-controls="nl-panel">
+    <span class="nl-fab-label">Subscribe</span>
+    <svg class="nl-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <path d="m3 7 9 6 9-6"></path>
+    </svg>
+  </button>
+
+  <div id="nl-panel" class="nl-panel" role="dialog" aria-label="Subscribe to the newsletter" aria-modal="false" hidden>
+    <button id="nl-close" class="nl-close" type="button" aria-label="Close">&#215;</button>
+    <h3 class="nl-title">Subscribe</h3>
+    <p class="nl-sub">New posts, straight to your inbox. No spam, unsubscribe anytime.</p>
+    <form id="nl-form" class="nl-form" novalidate>
+      <input class="nl-input" type="text" name="name" placeholder="Name (optional)" autocomplete="name" maxlength="100" />
+      <input class="nl-input" type="email" name="email" placeholder="you@example.com" autocomplete="email" required />
+      <button class="nl-submit" type="submit">Subscribe</button>
+      <p id="nl-msg" class="nl-msg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</div>
+
+<style>
+  .nl-widget { position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 60; }
+
+  .nl-fab {
+    display: flex; align-items: center; justify-content: center;
+    width: 54px; height: 54px; border-radius: 50%;
+    background: var(--accent); color: #fff; border: none; cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .nl-fab:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(0, 0, 0, 0.32); }
+  .nl-fab:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* hover label (desktop pointers only) */
+  .nl-fab-label {
+    position: absolute; right: 64px; white-space: nowrap;
+    background: var(--bg-soft); color: var(--text);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 0.3rem 0.55rem; font-size: 0.85rem;
+    opacity: 0; transform: translateX(6px); pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+  }
+  @media (hover: hover) {
+    .nl-fab:hover .nl-fab-label { opacity: 1; transform: translateX(0); }
+  }
+
+  .nl-panel {
+    position: absolute; right: 0; bottom: 68px;
+    width: min(320px, calc(100vw - 2.5rem));
+    background: var(--bg); color: var(--text);
+    border: 1px solid var(--border); border-radius: 12px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+    padding: 1.1rem 1.1rem 1rem;
+    transform-origin: bottom right;
+    animation: nl-pop 0.16s ease;
+  }
+  .nl-panel[hidden] { display: none; }
+  @keyframes nl-pop { from { opacity: 0; transform: scale(0.96) translateY(6px); } to { opacity: 1; transform: none; } }
+
+  .nl-close {
+    position: absolute; top: 0.5rem; right: 0.6rem;
+    background: none; border: none; color: var(--text-faint);
+    font-size: 1.35rem; line-height: 1; cursor: pointer; padding: 0.15rem;
+  }
+  .nl-close:hover { color: var(--text); }
+
+  .nl-title { margin: 0 0 0.25rem; font-size: 1.1rem; }
+  .nl-sub { margin: 0 0 0.85rem; font-size: 0.85rem; color: var(--text-soft); }
+
+  .nl-form { display: flex; flex-direction: column; gap: 0.55rem; }
+  .nl-input {
+    width: 100%; padding: 0.55rem 0.7rem;
+    background: var(--bg-soft); color: var(--text);
+    border: 1px solid var(--border); border-radius: 7px;
+    font-family: inherit; font-size: 0.92rem;
+  }
+  .nl-input:focus-visible { outline: none; border-color: var(--accent); }
+
+  .nl-submit {
+    width: 100%; padding: 0.55rem; margin-top: 0.1rem;
+    background: var(--accent); color: #fff; border: none; border-radius: 7px;
+    font-family: inherit; font-size: 0.92rem; font-weight: 700; cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+  .nl-submit:hover { opacity: 0.92; }
+  .nl-submit:disabled { opacity: 0.6; cursor: default; }
+
+  .nl-msg { margin: 0.2rem 0 0; font-size: 0.82rem; min-height: 1em; color: var(--text-soft); }
+  .nl-msg.ok { color: var(--accent); }
+  .nl-msg.err { color: #e5534b; }
+
+  @media (max-width: 520px) {
+    .nl-widget { right: 1rem; bottom: 1rem; }
+  }
+</style>
+
+<script>
+  function panel() { return document.getElementById("nl-panel"); }
+  function toggleBtn() { return document.getElementById("nl-toggle"); }
+  function widget() { return document.getElementById("nl-widget"); }
+
+  function openPanel() {
+    const p = panel(), b = toggleBtn();
+    if (!p || !b) return;
+    p.hidden = false;
+    b.setAttribute("aria-expanded", "true");
+    const email = p.querySelector('input[name="email"]');
+    if (email) email.focus();
+  }
+
+  function closePanel() {
+    const p = panel(), b = toggleBtn();
+    if (!p || !b) return;
+    p.hidden = true;
+    b.setAttribute("aria-expanded", "false");
+  }
+
+  function togglePanel() {
+    const p = panel();
+    if (!p) return;
+    p.hidden ? openPanel() : closePanel();
+  }
+
+  async function onSubmit(e) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const email = (form.email.value || "").trim();
+    const name = (form.name.value || "").trim();
+    const msg = document.getElementById("nl-msg");
+    const btn = form.querySelector(".nl-submit");
+
+    msg.className = "nl-msg";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      msg.textContent = "Please enter a valid email address.";
+      msg.classList.add("err");
+      return;
+    }
+
+    btn.disabled = true;
+    msg.textContent = "Subscribing…";
+
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, name }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        msg.textContent = data.message || "You are subscribed. Check your inbox.";
+        msg.classList.add("ok");
+        form.reset();
+        if (window.umami) window.umami.track("newsletter-subscribe");
+      } else {
+        msg.textContent = data.error || "Something went wrong. Please try again.";
+        msg.classList.add("err");
+      }
+    } catch {
+      msg.textContent = "Network error. Please try again.";
+      msg.classList.add("err");
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  function initNewsletter() {
+    const b = toggleBtn();
+    const form = document.getElementById("nl-form");
+    if (!b || !form) return;
+    closePanel(); // start closed after every navigation
+    b.addEventListener("click", togglePanel);
+    document.getElementById("nl-close")?.addEventListener("click", closePanel);
+    form.addEventListener("submit", onSubmit);
+  }
+
+  // Document-level listeners bind once; they look elements up live so they stay
+  // valid across View-Transitions navigations.
+  if (!window.__nlGlobalBound) {
+    window.__nlGlobalBound = true;
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closePanel();
+    });
+    document.addEventListener("click", (e) => {
+      const w = widget(), p = panel();
+      if (p && !p.hidden && w && !w.contains(e.target)) closePanel();
+    });
+  }
+
+  document.addEventListener("astro:page-load", initNewsletter);
+</script>

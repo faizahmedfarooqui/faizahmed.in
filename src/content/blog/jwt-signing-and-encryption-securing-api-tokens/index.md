@@ -5,7 +5,7 @@ cuid: cm8k6srga000a09jjc5tvhvec
 slug: jwt-signing-and-encryption-securing-api-tokens
 cover: ./cover.jpg
 tags: jwt, jwe, hmac, rsa
-series: encryption
+series: auth-and-identity
 
 ---
 

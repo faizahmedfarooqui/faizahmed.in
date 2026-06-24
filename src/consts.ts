@@ -203,6 +203,11 @@ export const SERIES = [
     description: "Using AI like an engineer: threat models, secure workflows, and meta-prompting for real production work.",
   },
   {
+    title: "Auth & Identity",
+    slug: "auth-and-identity",
+    description: "How modern authentication actually works: passkeys, WebAuthn, JWT, sessions, and OAuth.",
+  },
+  {
     title: "Mastering Encryption",
     slug: "encryption",
     description: "Practical cryptography for engineers: AWS KMS, Nitro Enclaves, and keeping secrets safe in production.",

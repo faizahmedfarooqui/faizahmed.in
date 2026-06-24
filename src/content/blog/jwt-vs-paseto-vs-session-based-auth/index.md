@@ -5,7 +5,7 @@ cuid: cmc90m6vr000r02lee7gp246y
 slug: jwt-vs-paseto-vs-session-based-auth
 cover: ./cover.jpg
 tags: auth-architecture, websecurity, nodejs, authentication, paseto, jwt, backend, devtips, oauth, access-control
-series: scaling-javascript-nodejs
+series: auth-and-identity
 
 ---
 
