@@ -36,7 +36,7 @@ title: "..."
 datePublished: Mon Jun 13 2022 09:14:14 GMT+0000 (Coordinated Universal Time)
 slug: my-post-slug          # becomes /my-post-slug (the SEO URL)
 cover: https://...           # optional
-tags: a, b, c
+tags: a, b, c, d
 series: encryption           # or null
 ```
 
