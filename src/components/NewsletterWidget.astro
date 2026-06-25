@@ -115,11 +115,25 @@ const turnstileEnabled = Boolean(TURNSTILE_SITE_KEY);
 </style>
 
 <script>
-  let tsWidgetId = null;
+  interface TurnstileApi {
+    render(el: HTMLElement, opts: { sitekey: string }): string;
+    getResponse(id: string): string | undefined;
+    reset(id: string): void;
+  }
+  declare global {
+    interface Window {
+      turnstile?: TurnstileApi;
+      onloadTurnstileNL?: () => void;
+      umami?: { track: (event: string) => void };
+      __nlGlobalBound?: boolean;
+    }
+  }
 
-  function panel() { return document.getElementById("nl-panel"); }
-  function toggleBtn() { return document.getElementById("nl-toggle"); }
-  function widget() { return document.getElementById("nl-widget"); }
+  let tsWidgetId: string | null = null;
+
+  const panel = () => document.getElementById("nl-panel");
+  const toggleBtn = () => document.getElementById("nl-toggle");
+  const widget = () => document.getElementById("nl-widget");
 
   // Load Turnstile's script lazily — only when someone actually opens the panel,
   // so normal visitors and crawlers never fetch or trigger it.
@@ -139,7 +153,7 @@ const turnstileEnabled = Boolean(TURNSTILE_SITE_KEY);
     const el = document.getElementById("nl-turnstile");
     if (!el || el.dataset.rendered || !window.turnstile) return;
     try {
-      tsWidgetId = window.turnstile.render(el, { sitekey: el.dataset.sitekey });
+      tsWidgetId = window.turnstile.render(el, { sitekey: el.dataset.sitekey || "" });
       el.dataset.rendered = "1";
     } catch {}
   }
@@ -153,8 +167,7 @@ const turnstileEnabled = Boolean(TURNSTILE_SITE_KEY);
     b.setAttribute("aria-expanded", "true");
     loadTurnstileScript(); // lazy-load on first open
     renderTurnstile();     // render now if the library is already loaded
-    const email = p.querySelector('input[name="email"]');
-    if (email) email.focus();
+    p.querySelector<HTMLInputElement>('input[name="email"]')?.focus();
   }
 
   function closePanel() {
@@ -170,14 +183,17 @@ const turnstileEnabled = Boolean(TURNSTILE_SITE_KEY);
     p.hidden ? openPanel() : closePanel();
   }
 
-  async function onSubmit(e) {
+  async function onSubmit(e: Event) {
     e.preventDefault();
-    const form = e.currentTarget;
-    const email = (form.email.value || "").trim();
-    const name = (form.name.value || "").trim();
-    const company = form.company ? form.company.value : ""; // honeypot
+    const form = e.currentTarget as HTMLFormElement;
+    const val = (n: string) =>
+      (form.elements.namedItem(n) as HTMLInputElement | null)?.value || "";
+    const email = val("email").trim();
+    const name = val("name").trim();
+    const company = val("company"); // honeypot
     const msg = document.getElementById("nl-msg");
-    const btn = form.querySelector(".nl-submit");
+    const btn = form.querySelector<HTMLButtonElement>(".nl-submit");
+    if (!msg || !btn) return;
 
     msg.className = "nl-msg";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -198,12 +214,12 @@ const turnstileEnabled = Boolean(TURNSTILE_SITE_KEY);
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, name, company, turnstileToken }),
       });
-      const data = await res.json().catch(() => ({}));
+      const data = (await res.json().catch(() => ({}))) as { message?: string; error?: string };
       if (res.ok) {
         msg.textContent = data.message || "You're subscribed. Check your inbox.";
         msg.classList.add("ok");
         form.reset();
-        if (window.umami) window.umami.track("newsletter-subscribe");
+        window.umami?.track("newsletter-subscribe");
       } else {
         msg.textContent = data.error || "Something went wrong. Please try again.";
         msg.classList.add("err");
@@ -238,9 +254,11 @@ const turnstileEnabled = Boolean(TURNSTILE_SITE_KEY);
     });
     document.addEventListener("click", (e) => {
       const w = widget(), p = panel();
-      if (p && !p.hidden && w && !w.contains(e.target)) closePanel();
+      if (p && !p.hidden && w && !w.contains(e.target as Node)) closePanel();
     });
   }
 
   document.addEventListener("astro:page-load", initNewsletter);
+
+  export {}; // make this script a module so `declare global` is valid
 </script>
