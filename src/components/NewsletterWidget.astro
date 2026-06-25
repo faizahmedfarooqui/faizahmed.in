@@ -1,9 +1,15 @@
 ---
 // Floating "Subscribe" widget shown on every page (mounted in BaseLayout).
-// A bottom-right circular button; click toggles a small panel that collects an
+// Bottom-right circular button; click toggles a small panel that collects an
 // (optional) name + email and POSTs to the /api/subscribe Pages Function.
+//
+// Abuse hardening: a hidden honeypot field, and (when configured) a Cloudflare
+// Turnstile bot check. Turnstile only renders when TURNSTILE_SITE_KEY is set.
+//
 // View-Transitions safe: element listeners (re)bind on astro:page-load against
 // fresh nodes; document-level listeners bind once (guarded on window).
+import { TURNSTILE_SITE_KEY } from "../consts";
+const turnstileEnabled = Boolean(TURNSTILE_SITE_KEY);
 ---
 
 <div id="nl-widget" class="nl-widget">
@@ -20,13 +26,20 @@
     <h3 class="nl-title">Subscribe</h3>
     <p class="nl-sub">New posts, straight to your inbox. No spam, unsubscribe anytime.</p>
     <form id="nl-form" class="nl-form" novalidate>
+      {/* honeypot: hidden from humans, bots tend to fill it */}
+      <input class="nl-hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <input class="nl-input" type="text" name="name" placeholder="Name (optional)" autocomplete="name" maxlength="100" />
       <input class="nl-input" type="email" name="email" placeholder="you@example.com" autocomplete="email" required />
+      {turnstileEnabled && <div id="nl-turnstile" data-sitekey={TURNSTILE_SITE_KEY}></div>}
       <button class="nl-submit" type="submit">Subscribe</button>
       <p id="nl-msg" class="nl-msg" role="status" aria-live="polite"></p>
     </form>
   </div>
 </div>
+
+{turnstileEnabled && (
+  <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileNL&render=explicit"></script>
+)}
 
 <style>
   .nl-widget { position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 60; }
@@ -41,7 +54,6 @@
   .nl-fab:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(0, 0, 0, 0.32); }
   .nl-fab:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-  /* hover label (desktop pointers only) */
   .nl-fab-label {
     position: absolute; right: 64px; white-space: nowrap;
     background: var(--bg-soft); color: var(--text);
@@ -78,6 +90,8 @@
   .nl-sub { margin: 0 0 0.85rem; font-size: 0.85rem; color: var(--text-soft); }
 
   .nl-form { display: flex; flex-direction: column; gap: 0.55rem; }
+  /* honeypot: kept off-screen rather than display:none so bots still see it */
+  .nl-hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   .nl-input {
     width: 100%; padding: 0.55rem 0.7rem;
     background: var(--bg-soft); color: var(--text);
@@ -105,15 +119,30 @@
 </style>
 
 <script>
+  let tsWidgetId = null;
+
   function panel() { return document.getElementById("nl-panel"); }
   function toggleBtn() { return document.getElementById("nl-toggle"); }
   function widget() { return document.getElementById("nl-widget"); }
+
+  // Render the Turnstile widget (explicit mode) into the fresh #nl-turnstile node.
+  function renderTurnstile() {
+    const el = document.getElementById("nl-turnstile");
+    if (!el || el.dataset.rendered || !window.turnstile) return;
+    try {
+      tsWidgetId = window.turnstile.render(el, { sitekey: el.dataset.sitekey });
+      el.dataset.rendered = "1";
+    } catch {}
+  }
+  // api.js calls this once the library is ready.
+  window.onloadTurnstileNL = renderTurnstile;
 
   function openPanel() {
     const p = panel(), b = toggleBtn();
     if (!p || !b) return;
     p.hidden = false;
     b.setAttribute("aria-expanded", "true");
+    renderTurnstile(); // ensure it's mounted if the library was already loaded
     const email = p.querySelector('input[name="email"]');
     if (email) email.focus();
   }
@@ -136,6 +165,7 @@
     const form = e.currentTarget;
     const email = (form.email.value || "").trim();
     const name = (form.name.value || "").trim();
+    const company = form.company ? form.company.value : ""; // honeypot
     const msg = document.getElementById("nl-msg");
     const btn = form.querySelector(".nl-submit");
 
@@ -146,6 +176,9 @@
       return;
     }
 
+    const turnstileToken =
+      window.turnstile && tsWidgetId != null ? (window.turnstile.getResponse(tsWidgetId) || "") : "";
+
     btn.disabled = true;
     msg.textContent = "Subscribing…";
 
@@ -153,11 +186,11 @@
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name }),
+        body: JSON.stringify({ email, name, company, turnstileToken }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok) {
-        msg.textContent = data.message || "You are subscribed. Check your inbox.";
+        msg.textContent = data.message || "You're subscribed. Check your inbox.";
         msg.classList.add("ok");
         form.reset();
         if (window.umami) window.umami.track("newsletter-subscribe");
@@ -170,6 +203,9 @@
       msg.classList.add("err");
     } finally {
       btn.disabled = false;
+      if (window.turnstile && tsWidgetId != null) {
+        try { window.turnstile.reset(tsWidgetId); } catch {}
+      }
     }
   }
 
@@ -178,6 +214,7 @@
     const form = document.getElementById("nl-form");
     if (!b || !form) return;
     closePanel(); // start closed after every navigation
+    renderTurnstile(); // (re)mount Turnstile on the fresh node
     b.addEventListener("click", togglePanel);
     document.getElementById("nl-close")?.addEventListener("click", closePanel);
     form.addEventListener("submit", onSubmit);

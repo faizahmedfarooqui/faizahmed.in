@@ -292,3 +292,10 @@ export const BOLT_VIDEOS = [
   { id: "30vwm5Q3qq8", episode: 8, title: "Infrastructure Components of OpenStack & its Dashboard" },
   { id: "aoMzxKveFP4", episode: 9, title: "Juju Dashboard & Juju Controller" },
 ];
+
+// Cloudflare Turnstile site key (PUBLIC, safe to commit) for the newsletter
+// widget's bot check. Leave "" to disable Turnstile entirely. The matching
+// SECRET goes in the TURNSTILE_SECRET_KEY Cloudflare env var (server-side).
+// Set both together, then deploy — the /api/subscribe function enforces the
+// token only when the secret is present.
+export const TURNSTILE_SITE_KEY = "";
