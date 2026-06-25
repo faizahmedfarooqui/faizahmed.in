@@ -298,4 +298,4 @@ export const BOLT_VIDEOS = [
 // SECRET goes in the TURNSTILE_SECRET_KEY Cloudflare env var (server-side).
 // Set both together, then deploy — the /api/subscribe function enforces the
 // token only when the secret is present.
-export const TURNSTILE_SITE_KEY = "";
+export const TURNSTILE_SITE_KEY = "0x4AAAAAADqtA5VPYTRyKIxL";
