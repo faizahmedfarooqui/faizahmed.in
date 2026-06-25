@@ -37,10 +37,6 @@ const turnstileEnabled = Boolean(TURNSTILE_SITE_KEY);
   </div>
 </div>
 
-{turnstileEnabled && (
-  <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileNL&render=explicit"></script>
-)}
-
 <style>
   .nl-widget { position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 60; }
 
@@ -125,6 +121,19 @@ const turnstileEnabled = Boolean(TURNSTILE_SITE_KEY);
   function toggleBtn() { return document.getElementById("nl-toggle"); }
   function widget() { return document.getElementById("nl-widget"); }
 
+  // Load Turnstile's script lazily — only when someone actually opens the panel,
+  // so normal visitors and crawlers never fetch or trigger it.
+  function loadTurnstileScript() {
+    if (document.getElementById("nl-ts-script")) return;     // already loading/loaded
+    if (!document.getElementById("nl-turnstile")) return;    // Turnstile not enabled
+    const s = document.createElement("script");
+    s.id = "nl-ts-script";
+    s.async = true;
+    s.defer = true;
+    s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileNL&render=explicit";
+    document.head.appendChild(s);
+  }
+
   // Render the Turnstile widget (explicit mode) into the fresh #nl-turnstile node.
   function renderTurnstile() {
     const el = document.getElementById("nl-turnstile");
@@ -142,7 +151,8 @@ const turnstileEnabled = Boolean(TURNSTILE_SITE_KEY);
     if (!p || !b) return;
     p.hidden = false;
     b.setAttribute("aria-expanded", "true");
-    renderTurnstile(); // ensure it's mounted if the library was already loaded
+    loadTurnstileScript(); // lazy-load on first open
+    renderTurnstile();     // render now if the library is already loaded
     const email = p.querySelector('input[name="email"]');
     if (email) email.focus();
   }
@@ -214,7 +224,6 @@ const turnstileEnabled = Boolean(TURNSTILE_SITE_KEY);
     const form = document.getElementById("nl-form");
     if (!b || !form) return;
     closePanel(); // start closed after every navigation
-    renderTurnstile(); // (re)mount Turnstile on the fresh node
     b.addEventListener("click", togglePanel);
     document.getElementById("nl-close")?.addEventListener("click", closePanel);
     form.addEventListener("submit", onSubmit);
