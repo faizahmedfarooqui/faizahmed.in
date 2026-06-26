@@ -22,8 +22,9 @@ A few itches that finally added up:
 
 - **Ownership.** My posts are now plain Markdown in Git. The presentation, the URLs,
   the build — all mine. No lock-in, no export-and-pray.
-- **Performance.** The site ships **zero JavaScript bundles** — just a few tiny inline
-  scripts for the theme toggle, search, and code-copy. Pages are basically HTML + CSS.
+- **Performance.** No UI framework. Astro renders static HTML; a little vanilla JS
+  powers the interactive bits (theme toggle, ⌘K search, newsletter, code-copy), and
+  Astro's View Transitions give instant, app-like navigation.
 - **Privacy.** I dropped Google Analytics for **cookieless** analytics. No cookies
   means no consent banner and a much smaller privacy footprint.
 - **No external dependencies.** Every image and the font are self-hosted. The page
@@ -45,8 +46,13 @@ ones — into each post's folder, then a script downscales them. The covers used
 **Fonts.** Ubuntu Mono is self-hosted (bundled into the build), not pulled from
 Google Fonts. That kills a render-blocking request *and* a third-party connection.
 
-**Analytics.** Cloudflare Web Analytics — cookieless, no personal data, consent-exempt.
-Nothing to disclose in a banner, and a short [privacy page](/privacy) covers the rest.
+**Analytics.** Umami — cookieless and consent-exempt — **proxied first-party** through
+a Cloudflare Pages Function, so it loads from my own domain (ad-blockers can't drop it)
+and no data goes to a third-party beacon. A short [privacy page](/privacy) covers it.
+
+**Newsletter.** I run my own instead of renting an audience: a Cloudflare Pages
+Function takes the signup and [Resend](https://resend.com) delivers the emails, with a
+proper one-click unsubscribe. No third-party embed, no tracking pixels — I own the list.
 
 The only things still loaded from outside are the YouTube embeds (click-to-load — no
 request until you actually press play) and the Mermaid runtime on the few posts with
@@ -82,8 +88,10 @@ a week or two while the engines reprocess — then it settles.
 - **Markdown in Git** — frontmatter for title, date, slug, tags, series. Writing a
   post is creating a folder and a file.
 - **Cloudflare Pages** — free static hosting, deploys on every push to `main`.
-- **Cookieless analytics**, self-hosted assets, and a `_headers` file with a real
-  Content-Security-Policy and HSTS for good measure.
+- **Cloudflare Pages Functions** — a first-party [Umami](https://umami.is) analytics
+  proxy and the newsletter (Resend) signup, both served from my own domain.
+- **Self-hosted assets** + a `_headers` file with a real Content-Security-Policy and
+  HSTS for good measure.
 
 A new post is just:
 
@@ -105,8 +113,9 @@ Self-hosting isn't free of trade-offs:
 
 - **The editor.** Hashnode's writing experience is nice. I now write in my editor and
   push to Git. I prefer it, but it's a different workflow.
-- **Built-in audience & newsletter.** Hashnode surfaces you to its community and
-  handles email subscriptions. I traded that for control.
+- **The built-in audience.** Hashnode surfaces you to its community and feed; a
+  standalone site starts cold and has to earn its traffic. (Email subscriptions I
+  rebuilt myself — see the newsletter above.)
 - **Comments.** Gone for now. Adding them back means a third-party widget — which
   fights the "no external scripts" goal — so I'm leaving them off.
 

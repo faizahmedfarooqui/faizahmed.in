@@ -1,5 +1,6 @@
 ---
 title: "Tame the Stream: Handling Backpressure in Node.js Like a Pro"
+description: "Node.js streams can flood memory and crash your app without backpressure. Learn how backpressure works and how to manage stream flow the right way."
 datePublished: Mon Apr 28 2025 06:59:57 GMT+0000 (Coordinated Universal Time)
 cuid: cma0qakzi000309l6d8bbcict
 slug: handling-backpressure-in-nodejs

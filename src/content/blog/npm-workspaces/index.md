@@ -1,5 +1,6 @@
 ---
 title: "Managing Multiple Packages with npm Workspaces"
+description: "A practical guide to npm Workspaces: manage a multi-package monorepo, share dependencies, link local packages, and run scripts across every workspace."
 datePublished: Wed May 03 2023 10:37:27 GMT+0000 (Coordinated Universal Time)
 cuid: clh7kdula000909mh3lndc7jw
 slug: npm-workspaces

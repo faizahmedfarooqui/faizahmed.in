@@ -1,5 +1,6 @@
 ---
 title: "End-to-End Encryption (E2EE) in Messaging Apps"
+description: "How end-to-end encryption (E2EE) works in messaging apps like Signal and WhatsApp: key exchange, and why not even the server can read your messages."
 datePublished: Sun Mar 23 2025 12:30:38 GMT+0000 (Coordinated Universal Time)
 cuid: cm8lm96wu000809lag5zq3wgt
 slug: end-to-end-encryption-e2ee-in-messaging-apps

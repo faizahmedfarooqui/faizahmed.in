@@ -1,5 +1,6 @@
 ---
 title: "MicroVM: Navigating Firecracker & Firectl"
+description: "Run lightweight microVMs with AWS Firecracker and firectl: how Firecracker boots VMs in milliseconds, plus a hands-on walkthrough of the firectl CLI."
 datePublished: Tue Sep 26 2023 05:30:12 GMT+0000 (Coordinated Universal Time)
 cuid: clmzvp3hh000209ig1km91ucj
 slug: microvm-firecracker-firectl

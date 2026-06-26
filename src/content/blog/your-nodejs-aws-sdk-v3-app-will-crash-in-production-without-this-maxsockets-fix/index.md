@@ -1,5 +1,6 @@
 ---
 title: "Your Node.js AWS SDK v3 App Will Crash in Production Without This maxSockets Fix"
+description: "Your Node.js AWS SDK v3 app hangs under load due to the default maxSockets limit. Here is the connection-pool fix that stops S3 and DynamoDB from freezing."
 datePublished: Fri Nov 07 2025 07:03:11 GMT+0000 (Coordinated Universal Time)
 cuid: cmhoie5qt000002k051q17ckl
 slug: your-nodejs-aws-sdk-v3-app-will-crash-in-production-without-this-maxsockets-fix

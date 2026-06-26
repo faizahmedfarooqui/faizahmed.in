@@ -1,5 +1,6 @@
 ---
 title: "What is Envelope Encryption?"
+description: "What is envelope encryption? How wrapping a data key (DEK) with a master key (KEK) secures data at scale, plus the AWS KMS envelope encryption pattern."
 datePublished: Mon Mar 17 2025 12:30:00 GMT+0000 (Coordinated Universal Time)
 cuid: cm8d4pwxi000t09k0dv983u44
 slug: what-is-envelope-encryption

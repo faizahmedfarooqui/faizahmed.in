@@ -1,5 +1,6 @@
 ---
 title: "Offset vs Cursor vs Keyset Pagination: Best Practices for Scalable APIs"
+description: "Offset vs cursor vs keyset pagination compared: why OFFSET breaks at scale, how keyset and cursor paging work, and which to choose for fast, stable APIs."
 datePublished: Thu May 01 2025 07:47:13 GMT+0000 (Coordinated Universal Time)
 cuid: cma52axmg000009if26je6md4
 slug: offset-vs-cursor-vs-keyset-pagination

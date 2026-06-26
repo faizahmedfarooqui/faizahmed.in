@@ -1,5 +1,6 @@
 ---
 title: "Stop Using JSON.parse on Huge Payloads: Streaming JSON in Node.js"
+description: "JSON.parse on large payloads blocks the event loop and spikes memory. Learn to stream huge JSON in Node.js with backpressure-safe parsing."
 datePublished: Wed May 07 2025 10:30:41 GMT+0000 (Coordinated Universal Time)
 cuid: cmadss9jb000e09jud9261jsq
 slug: streaming-huge-json-in-nodejs

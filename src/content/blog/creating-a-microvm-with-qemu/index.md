@@ -1,5 +1,6 @@
 ---
 title: "Creating a MicroVM with QEMU"
+description: "Create a lightweight microVM with QEMU from scratch: a step-by-step guide to running a minimal Linux virtual machine for fast, isolated environments."
 datePublished: Fri Oct 13 2023 18:30:00 GMT+0000 (Coordinated Universal Time)
 cuid: clnwsue7i000f0ala31yx7c8o
 slug: creating-a-microvm-with-qemu

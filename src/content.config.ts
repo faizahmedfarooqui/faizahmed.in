@@ -19,6 +19,8 @@ const blog = defineCollection({
     datePublished: z.coerce.date(),
     cuid: z.string().optional(),
     slug: z.string().optional(),
+    // Optional hand-written SEO meta description. Falls back to excerpt(body).
+    description: z.string().optional(),
     cover: image().optional().nullable(),
     tags: z
       .union([z.string(), z.array(z.string())])

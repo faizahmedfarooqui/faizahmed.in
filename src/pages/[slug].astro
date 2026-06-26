@@ -67,7 +67,7 @@ const { Content, headings } = await render(post);
 const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 const body = post.body ?? "";
 const mins = readMinutes(body);
-const desc = excerpt(body, 160);
+const desc = post.data.description ?? excerpt(body, 160);
 // Social-card image: a 1200px-wide JPEG derivative on the canonical host —
 // not the multi-MB original (which then no longer needs emitting at all).
 const ogCover = post.data.cover

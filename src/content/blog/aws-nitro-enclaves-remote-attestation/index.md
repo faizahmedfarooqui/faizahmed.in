@@ -1,5 +1,6 @@
 ---
 title: "How AWS Nitro Enclaves Prove You’re Running Secure Code: Remote Attestation Explained"
+description: "How AWS Nitro Enclaves and remote attestation prove your code runs untampered: attestation documents, KMS key release, and verifiable runtime trust."
 datePublished: Thu Oct 09 2025 12:10:37 GMT+0000 (Coordinated Universal Time)
 cuid: cmgjdlt4q000502k0e34oaue7
 slug: aws-nitro-enclaves-remote-attestation
