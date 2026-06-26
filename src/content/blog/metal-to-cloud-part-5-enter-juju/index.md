@@ -49,7 +49,7 @@ Instead of writing step-by-step procedural scripts, you tell Juju *what* you wan
 * **Bundle:** A YAML file defining a complete model – multiple applications, their configurations, and their relations. Bundles allow deploying complex stacks like OpenStack with a single command (we'll likely use bundles later).
     
 
-![](./image-1.png)
+![Juju applications connected by relations within a model](./image-1.png)
 
 ## Setting Up Our Juju Environment 🛠️
 

@@ -53,7 +53,7 @@ Once a server is physically cabled (including its BMC/iDRAC port to the MNT netw
 6. Voila! The server appears in the MaaS Web UI under the "Machines" tab, typically in the **"New"** state. This process is called **Enlistment**.
     
 
-![](./image-1.png)
+![MaaS enlistment: a booted server reports to the Region Controller and appears as a New machine](./image-1.png)
 
 ## Commissioning: Getting to Know Your Hardware 🕵️‍♀️
 

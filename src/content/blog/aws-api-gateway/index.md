@@ -22,7 +22,7 @@ This guide walks you through everything from routing and stage management to Lam
 * External URLs or legacy systems
     
 
-![](./image-1.png)
+![AWS API Gateway routing to internal microservices over VPC links and to external systems](./image-1.png)
 
 You can think of it as:
 

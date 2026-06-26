@@ -168,7 +168,7 @@ Then:
 
 ## Packaging Workflow
 
-![](./image-1.png)
+![Node.js library packaging workflow](./image-1.png)
 
 ## Summary: Ship Libraries That Just Work
 

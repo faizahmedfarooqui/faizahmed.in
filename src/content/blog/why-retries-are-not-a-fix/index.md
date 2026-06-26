@@ -76,7 +76,7 @@ Reality has already moved forward.
 
 Now the retry runs.
 
-![](./image-1.png)
+![A retry running after the system state has already moved on from the failure](./image-1.png)
 
 > The system retries because it thinks nothing happened. Reality says otherwise.
 

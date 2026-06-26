@@ -84,7 +84,7 @@ Before deploying apps, we need to tell our Juju client how to connect to the Ope
     Now, any `juju deploy` commands will target our OpenStack cloud.
     
 
-![](./image-1.png)
+![Juju deploying workloads onto the OpenStack cloud](./image-1.png)
 
 ## Example 1: Deploying Charmed Kubernetes on OpenStack ☸️
 

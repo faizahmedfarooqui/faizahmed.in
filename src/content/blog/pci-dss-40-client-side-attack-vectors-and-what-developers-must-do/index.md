@@ -48,7 +48,7 @@ Payment pages must be continuously monitored for unauthorized script or header c
 
 Here's a focused diagram that maps the sequence of protections needed around payment forms:
 
-![](./image-1.png)
+![Sequence of client-side protections around a payment form under PCI DSS 4.0](./image-1.png)
 
 ## Implementation Techniques & Tools
 

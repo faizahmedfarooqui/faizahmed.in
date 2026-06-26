@@ -55,11 +55,11 @@ In this post, we’ll break these frameworks down into **actionable development 
 
 ### **3\. Overlaps & Differences**
 
-![](./image-1.png)
+![Overlaps and differences between COPPA, HIPAA, and PCI DSS](./image-1.png)
 
 ### **4\. The “Hardening Path” for Compliant Data Flows**
 
-![](./image-2.png)
+![The hardening path for compliant data flows](./image-2.png)
 
 ## **Let’s wrap up…**
 
