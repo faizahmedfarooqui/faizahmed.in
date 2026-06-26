@@ -17,7 +17,7 @@ Maybe you're driven by specific needs like data control, unique performance requ
 
 Building your own on-premise cloud or data centre might seem daunting, but with the right tools and approach, it's achievable and incredibly rewarding.
 
-This post kicks off **"**[**Metal to Cloud: Your On-Prem Journey with MaaS, OpenStack & Juju**](/series/metal-to-cloud-on-prem-data-center)**"**, a series where I'll document my process of building a modern, automated on-prem cloud infrastructure from scratch.
+This post kicks off **"**[**Metal to Cloud: Your On-Prem Journey with MaaS, OpenStack & Juju**](/series/metal-to-cloud)**"**, a series where I'll document my process of building a modern, automated on-prem cloud infrastructure from scratch.
 
 We'll cover everything from selecting hardware and designing networks to deploying and managing cloud services.
 

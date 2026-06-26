@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import { unified } from "@astrojs/markdown-remark";
+import { remarkDemoteHeadings } from "./src/lib/remark-demote-headings.mjs";
 import { remarkMermaid } from "./src/lib/remark-mermaid.mjs";
 import { rehypeExternalLinks } from "./src/lib/rehype-external-links.mjs";
 import { rehypeHeadingAnchors } from "./src/lib/rehype-heading-anchors.mjs";
@@ -17,7 +18,8 @@ export default defineConfig({
     // unified() processor from @astrojs/markdown-remark (it still layers on
     // Astro's defaults: heading IDs, GFM, Shiki).
     processor: unified({
-      remarkPlugins: [remarkMermaid],
+      // Demote runs first so heading IDs + the TOC reflect the final levels.
+      remarkPlugins: [remarkDemoteHeadings, remarkMermaid],
       rehypePlugins: [rehypeExternalLinks, rehypeHeadingAnchors],
     }),
     shikiConfig: {
