@@ -198,12 +198,21 @@ pre.mermaid {
   background: transparent;
   text-align: center;
   margin: 1.5rem 0;
+  overflow-x: auto; /* a wide diagram scrolls in its box, not the page */
 }
+/* Constrain the rendered SVG so a big flowchart can't force the whole page wider
+   than the viewport on mobile (which makes browsers shrink-to-fit → tiny text).
+   Tap the diagram to open the full-screen zoom for detail. */
+pre.mermaid svg { max-width: 100%; height: auto; }
 
 /* Tables */
 table { width: 100%; border-collapse: collapse; margin: 1.2rem 0; font-size: 0.95rem; }
-th, td { border: 1px solid var(--border); padding: 0.5rem 0.7rem; text-align: left; }
+th, td { border: 1px solid var(--border); padding: 0.5rem 0.7rem; text-align: left; overflow-wrap: anywhere; }
 th { background: var(--bg-soft); }
+/* On phones, a wide table scrolls in its own box instead of stretching the page. */
+@media (max-width: 640px) {
+  .prose table { display: block; overflow-x: auto; }
+}
 /* Drop the outer frame; keep the internal cell separators. */
 thead th { border-top: none; }
 tbody tr:last-child td { border-bottom: none; }
