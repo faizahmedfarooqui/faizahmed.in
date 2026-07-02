@@ -184,12 +184,13 @@ export const COMPETENCIES = [
 // /now — what Faiz is focused on currently. KEEP THIS FRESH; update `updated`
 // whenever it changes (https://nownownow.com/about).
 export const NOW = {
-  updated: "2026-06-17",
+  updated: "2026-06-24",
   intro:
     "A snapshot of what I'm working on and thinking about right now.",
   items: [
     "Leading engineering as Lead Software Engineer at Talendy Holdings.",
     "Writing the secret-keystore series on encrypting secrets with AWS KMS in Node.js.",
+    'Building <a href="https://www.npmjs.com/package/@faizahmed/secret-keystore" target="_blank" rel="noopener">@faizahmed/secret-keystore</a> — Phase 1 is shipped; the later phases are still in development. It\'s not a priority right now, but I\'ll pick it back up as soon as I have the bandwidth. (<a href="https://github.com/faizahmedfarooqui/secret-keystore" target="_blank" rel="noopener">GitHub</a>)',
     "Exploring microVMs (Firecracker, QEMU) and the engineering behind resilient FinTech systems.",
   ],
 };

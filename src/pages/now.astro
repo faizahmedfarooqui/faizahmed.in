@@ -18,7 +18,8 @@ const updated = new Date(NOW.updated).toLocaleDateString("en-US", {
     <p class="updated">Updated {updated}</p>
     <p class="intro">{NOW.intro}</p>
     <ul>
-      {NOW.items.map((item) => <li>{item}</li>)}
+      {/* Items are author-controlled (consts.ts NOW) so inline links are safe. */}
+      {NOW.items.map((item) => <li set:html={item} />)}
     </ul>
     <p class="footnote">
       This is a <a href="https://nownownow.com/about" target="_blank" rel="noopener">now page</a>:
